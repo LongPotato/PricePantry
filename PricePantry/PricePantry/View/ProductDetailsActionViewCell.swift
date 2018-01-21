@@ -20,10 +20,14 @@ class ProductDetailsActionViewCell : UITableViewCell {
         return button
     }()
     
+    var cellActionDelegate: DetailsViewCellActionDelegate!
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
+        
+        addPriceButton.addTarget(self, action: #selector(addPriceButtonTapped), for: .touchUpInside)
         
         addSubview(addPriceButton)
         
@@ -36,5 +40,9 @@ class ProductDetailsActionViewCell : UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func addPriceButtonTapped() {
+        cellActionDelegate.addPriceButtonTapped()
     }
 }

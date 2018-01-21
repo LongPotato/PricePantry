@@ -22,7 +22,6 @@ class ProductTableViewController: UITableViewController {
         navigationItem.title = "Products"
         navigationItem.rightBarButtonItem = newProductButton
         
-        
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: String(describing: ProductTableViewCell.self))
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 96

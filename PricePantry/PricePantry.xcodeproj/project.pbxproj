@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C1CC9542013D62C002A163F /* AddEditPriceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC9532013D62C002A163F /* AddEditPriceController.swift */; };
+		1C1CC9572013E53E002A163F /* CellActionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC9562013E53E002A163F /* CellActionDelegate.swift */; };
+		1C1CC95A2013F46F002A163F /* EntryCellWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC9592013F46F002A163F /* EntryCellWithLabel.swift */; };
+		1C1CC95C20140432002A163F /* BaseControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC95B20140432002A163F /* BaseControlCell.swift */; };
+		1C1CC95E2014464C002A163F /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC95D2014464C002A163F /* DatePickerCell.swift */; };
 		1C76F0F920045869009C9F26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C76F0F120045869009C9F26 /* AppDelegate.swift */; };
 		1C76F0FA20045869009C9F26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C76F0F220045869009C9F26 /* Assets.xcassets */; };
 		1C76F0FC20045869009C9F26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C76F0F420045869009C9F26 /* LaunchScreen.storyboard */; };
@@ -22,6 +27,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C1CC9532013D62C002A163F /* AddEditPriceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditPriceController.swift; sourceTree = "<group>"; };
+		1C1CC9562013E53E002A163F /* CellActionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellActionDelegate.swift; sourceTree = "<group>"; };
+		1C1CC9592013F46F002A163F /* EntryCellWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCellWithLabel.swift; sourceTree = "<group>"; };
+		1C1CC95B20140432002A163F /* BaseControlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseControlCell.swift; sourceTree = "<group>"; };
+		1C1CC95D2014464C002A163F /* DatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerCell.swift; sourceTree = "<group>"; };
 		1C76F0F120045869009C9F26 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1C76F0F220045869009C9F26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1C76F0F320045869009C9F26 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -57,6 +67,24 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		1C1CC9552013E4F8002A163F /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				1C1CC9562013E53E002A163F /* CellActionDelegate.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		1C1CC9582013F3FA002A163F /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				1C1CC95B20140432002A163F /* BaseControlCell.swift */,
+				1C1CC9592013F46F002A163F /* EntryCellWithLabel.swift */,
+				1C1CC95D2014464C002A163F /* DatePickerCell.swift */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
 		1C6B71B72000135B00221DF0 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +96,7 @@
 		1C76F0F020045869009C9F26 /* PricePantry */ = {
 			isa = PBXGroup;
 			children = (
+				1C1CC9552013E4F8002A163F /* Protocol */,
 				1C1CC9522013B7DC002A163F /* Model */,
 				1C76F10320045C40009C9F26 /* View */,
 				1CFC3B122013B4E7004A06AE /* Controller */,
@@ -82,6 +111,7 @@
 		1C76F10320045C40009C9F26 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				1C1CC9582013F3FA002A163F /* Control */,
 				1C76F0F720045869009C9F26 /* ProductTableViewCell.swift */,
 				1C76F10120045BBE009C9F26 /* ProductDetailsHeaderView.swift */,
 				1C76F10420045CFD009C9F26 /* ProductDetailsTitleViewCell.swift */,
@@ -97,6 +127,7 @@
 				1C76F0F820045869009C9F26 /* ProductTableViewController.swift */,
 				1C76F0F620045869009C9F26 /* ProductDetailsViewController.swift */,
 				1CFC3B0E200D6DAD004A06AE /* SampleTestViewController.swift */,
+				1C1CC9532013D62C002A163F /* AddEditPriceController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -172,16 +203,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C1CC9572013E53E002A163F /* CellActionDelegate.swift in Sources */,
 				1C76F10020045869009C9F26 /* ProductTableViewController.swift in Sources */,
+				1C1CC9542013D62C002A163F /* AddEditPriceController.swift in Sources */,
 				1C76F0F920045869009C9F26 /* AppDelegate.swift in Sources */,
 				1CFC3B0B200C16D8004A06AE /* ProductDetailsActionViewCell.swift in Sources */,
 				1CFC3B112012BD32004A06AE /* ProductPriceViewCell.swift in Sources */,
 				1C76F0FF20045869009C9F26 /* ProductTableViewCell.swift in Sources */,
 				1C76F0FD20045869009C9F26 /* Models.swift in Sources */,
 				1C76F0FE20045869009C9F26 /* ProductDetailsViewController.swift in Sources */,
+				1C1CC95A2013F46F002A163F /* EntryCellWithLabel.swift in Sources */,
+				1C1CC95C20140432002A163F /* BaseControlCell.swift in Sources */,
 				1CFC3B0F200D6DAD004A06AE /* SampleTestViewController.swift in Sources */,
 				1C76F10520045CFD009C9F26 /* ProductDetailsTitleViewCell.swift in Sources */,
 				1C76F10220045BBE009C9F26 /* ProductDetailsHeaderView.swift in Sources */,
+				1C1CC95E2014464C002A163F /* DatePickerCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

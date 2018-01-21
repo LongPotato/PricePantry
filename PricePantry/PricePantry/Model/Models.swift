@@ -14,10 +14,10 @@ class Product {
     var prices: [Price]
     
     convenience init (name: String) {
-        self.init(name: name, image: UIImage())
+        self.init(name: name, image: nil)
     }
     
-    init(name: String, image: UIImage) {
+    init(name: String, image: UIImage?) {
         self.name = name
         self.image = image
         prices = []

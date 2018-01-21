@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProducDetailsViewController: UITableViewController {
+class ProducDetailsViewController: UITableViewController, DetailsViewCellActionDelegate {
     private var product: Product?
     private var defaultTintColor: UIColor?
     private let tableViewHeaderHeight: CGFloat = 350
@@ -96,6 +96,7 @@ class ProducDetailsViewController: UITableViewController {
                 return cell
             default:
                 let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductDetailsActionViewCell.self)) as! ProductDetailsActionViewCell
+                cell.cellActionDelegate = self
                 return cell
             }
         default:
@@ -116,5 +117,10 @@ class ProducDetailsViewController: UITableViewController {
     
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         headerView.scrollViewDidEndDragging(scrollView: scrollView)
+    }
+    
+    func addPriceButtonTapped() {
+        let newPriceController = UINavigationController(rootViewController: AddEditPriceController(style: .grouped))
+        present(newPriceController, animated: true, completion: nil)
     }
 }
