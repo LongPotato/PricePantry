@@ -12,7 +12,7 @@ import UIKit
  This protocol helps perform action outside of the cell class.
  Steps:
     1) In the tableview controller class, conform to this protocol
-    2) Assign the tableview instrance as the cell's delegate of type CellActionDelegate
+    2) Assign the tableview instance as the cell's delegate of type CellActionDelegate
     3) Call the appropriate func when needed inside the cell class
 */
 protocol DetailsViewCellActionDelegate {

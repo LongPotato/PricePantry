@@ -119,6 +119,8 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         headerView.scrollViewDidEndDragging(scrollView: scrollView)
     }
     
+    // MARK: DetailsViewCellActionDelegate
+    
     func addPriceButtonTapped() {
         let newPriceController = UINavigationController(rootViewController: AddEditPriceController(style: .grouped))
         present(newPriceController, animated: true, completion: nil)

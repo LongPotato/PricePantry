@@ -36,7 +36,7 @@ class EntryCellWithLabel: BaseControlCell, UITextFieldDelegate {
         nameLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
         
-        inputTextField.leftAnchor.constraint(equalTo: leftAnchor, constant: 152).isActive = true
+        inputTextField.leftAnchor.constraint(equalTo: nameLabel.rightAnchor, constant: 5).isActive = true
         inputTextField.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
         inputTextField.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
     }

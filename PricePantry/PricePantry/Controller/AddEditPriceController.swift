@@ -58,20 +58,16 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section) {
         case 0:
-            // Price section
-            let priceCell = tableView.dequeueReusableCell(withIdentifier: String(describing: EntryCellWithLabel.self), for: indexPath) as! EntryCellWithLabel
-            priceCell.updateLabels(keyboardType: .decimalPad, label: "$", placeHolder: "Price")
-            priceCell.cellActionDelegate = self
-            return priceCell
+            // Price section, price cell
+            return getEntryCellWithLabel(indexPath: indexPath, keyboard: .decimalPad, label: "$", placeHolderText: "Price")
         default:
             // Store & Date section
             switch(indexPath.row) {
             case 0:
-                let storeCell = tableView.dequeueReusableCell(withIdentifier: String(describing: EntryCellWithLabel.self), for: indexPath) as! EntryCellWithLabel
-                storeCell.updateLabels(keyboardType: .default, label: "Store", placeHolder: "Name")
-                storeCell.cellActionDelegate = self
-                return storeCell
+                // Store cell
+                return getEntryCellWithLabel(indexPath: indexPath, keyboard: .default, label: "Store", placeHolderText: "Name")
             case 1:
+                // Select date cell
                 selectDatePickerCellIndexPath = indexPath
                 let selectDatePickerCell = UITableViewCell(style: .value1, reuseIdentifier: selectDatePickerCellIndentifier)
                 selectDatePickerCell.selectionStyle = .none
@@ -84,6 +80,7 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
                 selectDatePickerCell.detailTextLabel!.text = strDate
                 return selectDatePickerCell
             default:
+                // Date picker cell
                 let datePickerCell = tableView.dequeueReusableCell(withIdentifier: String(describing: DatePickerCell.self), for: indexPath) as! DatePickerCell
                 datePickerCell.datePicker.datePickerMode = .date
                 return datePickerCell
@@ -98,6 +95,13 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
             UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
         }
         toggleDatePickerCell(indexPath: indexPath)
+    }
+    
+    func getEntryCellWithLabel(indexPath: IndexPath, keyboard: UIKeyboardType, label: String, placeHolderText: String) -> EntryCellWithLabel {
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: EntryCellWithLabel.self), for: indexPath) as! EntryCellWithLabel
+        cell.updateLabels(keyboardType: keyboard, label: label, placeHolder: placeHolderText)
+        cell.cellActionDelegate = self
+        return cell
     }
     
     func getDatePickerIndexPath(selectCellIndexPath: IndexPath) -> IndexPath {
@@ -119,6 +123,8 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         }
         tableView.endUpdates()
     }
+    
+    // MARK: AddEditPriceCellActionDelegate
     
     func inputFieldTapped() {
         let datepickeIndexPath = getDatePickerIndexPath(selectCellIndexPath: selectDatePickerCellIndexPath)
