@@ -12,6 +12,7 @@
 		1C1CC95A2013F46F002A163F /* EntryCellWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC9592013F46F002A163F /* EntryCellWithLabel.swift */; };
 		1C1CC95C20140432002A163F /* BaseControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC95B20140432002A163F /* BaseControlCell.swift */; };
 		1C1CC95E2014464C002A163F /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC95D2014464C002A163F /* DatePickerCell.swift */; };
+		1C1CC96020154C0E002A163F /* LargeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1CC95F20154C0E002A163F /* LargeEntryCell.swift */; };
 		1C76F0F920045869009C9F26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C76F0F120045869009C9F26 /* AppDelegate.swift */; };
 		1C76F0FA20045869009C9F26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C76F0F220045869009C9F26 /* Assets.xcassets */; };
 		1C76F0FC20045869009C9F26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C76F0F420045869009C9F26 /* LaunchScreen.storyboard */; };
@@ -32,6 +33,7 @@
 		1C1CC9592013F46F002A163F /* EntryCellWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCellWithLabel.swift; sourceTree = "<group>"; };
 		1C1CC95B20140432002A163F /* BaseControlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseControlCell.swift; sourceTree = "<group>"; };
 		1C1CC95D2014464C002A163F /* DatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerCell.swift; sourceTree = "<group>"; };
+		1C1CC95F20154C0E002A163F /* LargeEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeEntryCell.swift; sourceTree = "<group>"; };
 		1C76F0F120045869009C9F26 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1C76F0F220045869009C9F26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1C76F0F320045869009C9F26 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				1C1CC95B20140432002A163F /* BaseControlCell.swift */,
 				1C1CC9592013F46F002A163F /* EntryCellWithLabel.swift */,
 				1C1CC95D2014464C002A163F /* DatePickerCell.swift */,
+				1C1CC95F20154C0E002A163F /* LargeEntryCell.swift */,
 			);
 			path = Control;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				1C1CC95A2013F46F002A163F /* EntryCellWithLabel.swift in Sources */,
 				1C1CC95C20140432002A163F /* BaseControlCell.swift in Sources */,
 				1CFC3B0F200D6DAD004A06AE /* SampleTestViewController.swift in Sources */,
+				1C1CC96020154C0E002A163F /* LargeEntryCell.swift in Sources */,
 				1C76F10520045CFD009C9F26 /* ProductDetailsTitleViewCell.swift in Sources */,
 				1C76F10220045BBE009C9F26 /* ProductDetailsHeaderView.swift in Sources */,
 				1C1CC95E2014464C002A163F /* DatePickerCell.swift in Sources */,
