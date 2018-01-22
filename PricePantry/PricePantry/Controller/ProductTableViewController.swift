@@ -36,20 +36,20 @@ class ProductTableViewController: UITableViewController {
         
         self.products = [product1, product2, product3]
         
-        var prices: [Price] = []
-        
-        for i in 0...9 {
-            let price = Price(price: 18.45, timeStamp: Date())
-            if (i % 2 == 0) {
-                price.store = "Costco"
-            } else if (i % 3 == 0) {
-                price.store = "Amazon"
-            }
-            prices.append(price)
-        }
-        
-        product1.prices = prices
-        product3.prices = prices
+//        var prices: [Price] = []
+//        
+//        for i in 0...9 {
+//            let price = Price(price: 18.45, timeStamp: Date())
+//            if (i % 2 == 0) {
+//                price.store = "Costco"
+//            } else if (i % 3 == 0) {
+//                price.store = "Amazon"
+//            }
+//            prices.append(price)
+//        }
+//        
+//        product1.prices = prices
+//        product3.prices = prices
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

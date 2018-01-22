@@ -9,9 +9,19 @@
 import UIKit
 
 class AddEditPriceController: UITableViewController, AddEditPriceCellActionDelegate {
+    var priceCell: EntryCellWithLabel!
+    var storeCell: EntryCellWithLabel!
+    var selectDatePickerCell: UITableViewCell!
+    var datePickerCell: DatePickerCell!
+    var quantityCell: EntryCellWithLabel!
+    var unitPriceCell: UITableViewCell!
+    var notesCell: LargeEntryCell!
+    
     var selectDatePickerCellIndexPath: IndexPath!
     let displayCellIndentifier = "displayCelIndentifier"
     var datePickerCellDisplayed = false
+    
+    var priceObject: Price?
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
@@ -23,7 +33,13 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
     
     override func viewDidLoad() {
         navigationItem.title = "New Price"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .done, target: self, action: nil)
+        var saveButtonText = "Save"
+        
+        if (priceObject == nil) {
+            saveButtonText = "Add"
+        }
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: saveButtonText, style: .done, target: self, action: #selector(submitPrice))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelAndExitPage))
         
         tableView.keyboardDismissMode = .onDrag
@@ -35,6 +51,10 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
     
     @objc func cancelAndExitPage() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func submitPrice() {
+        
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -60,39 +80,43 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         switch (indexPath.section) {
         case 0:
             // Price section, price cell
-            return getEntryCellWithLabel(indexPath: indexPath, keyboard: .decimalPad, label: "$", placeHolderText: "Price")
+            priceCell = getEntryCellWithLabel(indexPath: indexPath, keyboard: .decimalPad, label: "$", placeHolderText: "Price")
+            priceCell.inputTextField.addTarget(self, action: #selector(priceInputChanged), for: .editingChanged)
+            return priceCell
         case 1:
             // Store & Date & Quantity section
             switch(indexPath.row) {
             case 0:
                 // Store cell
-                return getEntryCellWithLabel(indexPath: indexPath, keyboard: .default, label: "Store", placeHolderText: "Name")
+                storeCell = getEntryCellWithLabel(indexPath: indexPath, keyboard: .default, label: "Store", placeHolderText: "Name")
+                return storeCell
             case 1:
                 // Select date cell
                 selectDatePickerCellIndexPath = indexPath
-                let selectDatePickerCell = getValue1DisplayCell(label: "Date")
+                selectDatePickerCell = getValue1DisplayCell(label: "Date")
                 
-                let formatter = DateFormatter()
-                formatter.dateFormat = "MM/dd/yyyy"
-                let strDate = formatter.string(from: Date())
+                let strDate = formatDate(dateTime: Date())
                 
                 selectDatePickerCell.detailTextLabel!.text = strDate
                 selectDatePickerCell.detailTextLabel!.textColor = .black
-                return selectDatePickerCell
+                return selectDatePickerCell!
             case 2:
                 if (datePickerCellDisplayed) {
                     // Date picker cell
-                    let datePickerCell = tableView.dequeueReusableCell(withIdentifier: String(describing: DatePickerCell.self), for: indexPath) as! DatePickerCell
+                    datePickerCell = tableView.dequeueReusableCell(withIdentifier: String(describing: DatePickerCell.self), for: indexPath) as? DatePickerCell
                     datePickerCell.datePicker.datePickerMode = .date
+                    datePickerCell.datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
                     return datePickerCell
                 } else {
                     // Quantity cell
-                    return getEntryCellWithLabel(indexPath: indexPath, keyboard: .decimalPad, label: "Quantiy", placeHolderText: "# Unit")
+                    quantityCell = getEntryCellWithLabel(indexPath: indexPath, keyboard: .decimalPad, label: "Quantiy", placeHolderText: "# Unit")
+                    quantityCell.inputTextField.addTarget(self, action: #selector(priceInputChanged), for: .editingChanged)
+                    return quantityCell
                 }
             default:
                 // Unit price cell
-                let unitPriceCell = getValue1DisplayCell(label: "Unit Price")
-                unitPriceCell.detailTextLabel!.text = "$10"
+                unitPriceCell = getValue1DisplayCell(label: "Unit Price")
+                unitPriceCell.detailTextLabel!.text = "$0"
                 return unitPriceCell
             }
         default:
@@ -146,10 +170,43 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         return IndexPath(row: selectCellIndexPath.row + 1, section: 1)
     }
     
+    func formatDate(dateTime: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        let strDate = formatter.string(from: dateTime)
+        return strDate
+    }
+    
     // MARK: AddEditPriceCellActionDelegate
     
     func inputFieldTapped() {
         let datepickeIndexPath = getDatePickerIndexPath(selectCellIndexPath: selectDatePickerCellIndexPath)
         toggleDatePickerCell(indexPath: datepickeIndexPath)
+    }
+    
+    // MARK: Update price values
+    
+    @objc func datePickerChanged(_ picker: UIDatePicker) {
+        let strDate = formatDate(dateTime: picker.date)
+        selectDatePickerCell.detailTextLabel!.text = strDate
+    }
+    
+    @objc func priceInputChanged() {
+        var price = 0.0
+        var denominator = 1.0
+        var unitPrice: Double
+        
+        if let priceText = priceCell.inputTextField.text, !priceText.isEmpty {
+            price = Double(priceText)!
+        }
+        if let quantity = quantityCell.inputTextField.text, !quantity.isEmpty {
+            denominator = Double(quantity)!
+            if (denominator == 0) {
+                denominator = 1
+            }
+        }
+        
+        unitPrice = price / denominator
+        unitPriceCell.detailTextLabel!.text = "$" + String(unitPrice)
     }
 }

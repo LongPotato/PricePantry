@@ -29,6 +29,8 @@ class Price {
     var timeStamp: Date
     var store: String?
     var notes: String?
+    var quantity: Double?
+    var unitPrice: Double?
     
     init(price: Double, timeStamp: Date) {
         self.price = price
