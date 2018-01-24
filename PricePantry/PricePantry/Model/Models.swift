@@ -32,8 +32,13 @@ class Price {
     var quantity: Double?
     var unitPrice: Double?
     
-    init(price: Double, timeStamp: Date) {
+    init(price: Double, timeStamp: Date, store: String, notes: String,
+         quantity: Double, unitPrice: Double) {
         self.price = price
         self.timeStamp = timeStamp
+        self.store = store
+        self.notes = notes
+        self.quantity = quantity
+        self.unitPrice = unitPrice
     }
 }

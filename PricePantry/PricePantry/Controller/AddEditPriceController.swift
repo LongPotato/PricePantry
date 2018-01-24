@@ -22,6 +22,8 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
     var datePickerCellDisplayed = false
     
     var priceObject: Price?
+    var selectedProduct: Product?
+    var detailsPageTableView: UITableView?
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
@@ -47,14 +49,6 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         tableView.register(EntryCellWithLabel.self, forCellReuseIdentifier: String(describing: EntryCellWithLabel.self))
         tableView.register(DatePickerCell.self, forCellReuseIdentifier: String(describing: DatePickerCell.self))
         tableView.register(LargeEntryCell.self, forCellReuseIdentifier: String(describing: LargeEntryCell.self))
-    }
-    
-    @objc func cancelAndExitPage() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func submitPrice() {
-        
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -95,7 +89,7 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
                 selectDatePickerCellIndexPath = indexPath
                 selectDatePickerCell = getValue1DisplayCell(label: "Date")
                 
-                let strDate = formatDate(dateTime: Date())
+                let strDate = formatDateToString(dateTime: Date())
                 
                 selectDatePickerCell.detailTextLabel!.text = strDate
                 selectDatePickerCell.detailTextLabel!.textColor = .black
@@ -121,7 +115,7 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
             }
         default:
             // Notes section, notes cell
-            let notesCell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self)) as! LargeEntryCell
+            notesCell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self)) as! LargeEntryCell
             notesCell.inputTextField.placeholder = "Notes"
             return notesCell
         }
@@ -170,11 +164,18 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         return IndexPath(row: selectCellIndexPath.row + 1, section: 1)
     }
     
-    func formatDate(dateTime: Date) -> String {
+    func formatDateToString(dateTime: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
         let strDate = formatter.string(from: dateTime)
         return strDate
+    }
+    
+    func formatStringToDate(dateStr: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        let date = formatter.date(from: dateStr)
+        return date
     }
     
     // MARK: AddEditPriceCellActionDelegate
@@ -187,26 +188,92 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
     // MARK: Update price values
     
     @objc func datePickerChanged(_ picker: UIDatePicker) {
-        let strDate = formatDate(dateTime: picker.date)
+        let strDate = formatDateToString(dateTime: picker.date)
         selectDatePickerCell.detailTextLabel!.text = strDate
     }
     
     @objc func priceInputChanged() {
+        let price = getPriceValue()
+        let quantity = getQuantityValue()
+        let unitPrice = calculateUnitPrice(price: price, quantity: quantity)
+        
+        unitPriceCell.detailTextLabel!.text = "$" + String(unitPrice)
+    }
+    
+    @objc func submitPrice() {
+        let price = getPriceValue()
+        let quantity = getQuantityValue()
+        let unitPrice = calculateUnitPrice(price: price, quantity: quantity)
+        let timeStamp = getTimeStampValue()
+        let store = getStoreNameValue()
+        let notes = getNotesValue()
+        
+        priceObject = Price(price: price, timeStamp: timeStamp, store: store, notes: notes, quantity: quantity, unitPrice: unitPrice)
+        
+        if let product = selectedProduct {
+            product.prices.append(priceObject!)
+        }
+        
+        if let tableView = detailsPageTableView {
+            tableView.reloadData()
+        }
+        cancelAndExitPage()
+    }
+    
+    @objc func cancelAndExitPage() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: Parse & validate values
+    
+    func getPriceValue() -> Double {
         var price = 0.0
-        var denominator = 1.0
-        var unitPrice: Double
         
         if let priceText = priceCell.inputTextField.text, !priceText.isEmpty {
             price = Double(priceText)!
         }
+        return price
+    }
+    
+    func getQuantityValue() -> Double {
+        var denominator = 1.0
+        
         if let quantity = quantityCell.inputTextField.text, !quantity.isEmpty {
             denominator = Double(quantity)!
             if (denominator == 0) {
                 denominator = 1
             }
         }
+        return denominator
+    }
+    
+    func calculateUnitPrice(price: Double, quantity: Double) -> Double {
+        return price / quantity
+    }
+    
+    func getTimeStampValue() -> Date {
+        let dateStr = selectDatePickerCell.detailTextLabel!.text!
+        if let date = formatStringToDate(dateStr: dateStr) {
+            return date
+        }
+        return Date()
+    }
+    
+    func getStoreNameValue() -> String {
+        var storeName = ""
         
-        unitPrice = price / denominator
-        unitPriceCell.detailTextLabel!.text = "$" + String(unitPrice)
+        if let name = storeCell.inputTextField.text {
+            storeName = name
+        }
+        return storeName
+    }
+    
+    func getNotesValue() -> String {
+        var notesText = ""
+        
+        if let text = notesCell.inputTextField.text {
+            notesText = text
+        }
+        return notesText
     }
 }

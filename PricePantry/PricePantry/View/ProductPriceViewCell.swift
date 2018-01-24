@@ -62,7 +62,7 @@ class ProductPriceViewCell: UITableViewCell {
         
         var leftLabelText = strDate
         
-        if let store = price.store {
+        if let store = price.store, !store.isEmpty {
             leftLabelText += " - " + store
         }
             

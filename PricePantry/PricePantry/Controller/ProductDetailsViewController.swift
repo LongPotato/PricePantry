@@ -122,7 +122,10 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     // MARK: DetailsViewCellActionDelegate
     
     func addPriceButtonTapped() {
-        let newPriceController = UINavigationController(rootViewController: AddEditPriceController(style: .grouped))
+        let controller = AddEditPriceController(style: .grouped)
+        controller.selectedProduct = product
+        controller.detailsPageTableView = tableView
+        let newPriceController = UINavigationController(rootViewController: controller)
         present(newPriceController, animated: true, completion: nil)
     }
 }
