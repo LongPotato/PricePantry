@@ -23,6 +23,13 @@ class ProductDetailsHeaderView: UIView {
         return container
     }()
     
+    let overlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     var imageViewHeightContraint: NSLayoutConstraint!
     var tableViewHeaderFrame: CGRect
     
@@ -44,6 +51,13 @@ class ProductDetailsHeaderView: UIView {
         productImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 0).isActive = true
         productImageView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: 0).isActive = true
         productImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
+        
+        containerView.addSubview(overlayView)
+        
+        overlayView.leftAnchor.constraint(equalTo: productImageView.leftAnchor).isActive = true
+        overlayView.rightAnchor.constraint(equalTo: productImageView.rightAnchor).isActive = true
+        overlayView.topAnchor.constraint(equalTo: productImageView.topAnchor).isActive = true
+        overlayView.bottomAnchor.constraint(equalTo: productImageView.bottomAnchor).isActive = true
     }
     
     convenience init(frame: CGRect, image: UIImage) {

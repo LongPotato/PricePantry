@@ -11,7 +11,7 @@ import UIKit
 class ProducDetailsViewController: UITableViewController, DetailsViewCellActionDelegate {
     private var product: Product?
     private var defaultTintColor: UIColor?
-    private let tableViewHeaderHeight: CGFloat = 350
+    private let tableViewHeaderHeight: CGFloat = 250
     var headerView: ProductDetailsHeaderView!
     
     init() {

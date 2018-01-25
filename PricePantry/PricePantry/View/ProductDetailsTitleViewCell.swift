@@ -11,7 +11,7 @@ import UIKit
 class ProductDetailsTitleViewCell: UITableViewCell {
     var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 23, weight: .medium)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +40,7 @@ class ProductDetailsTitleViewCell: UITableViewCell {
         
         divider.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         divider.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        divider.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         divider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
     }
     
