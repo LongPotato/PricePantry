@@ -10,7 +10,6 @@ import UIKit
 
 class ProductTableViewController: UITableViewController {
     let searchBarController = UISearchController(searchResultsController: nil)
-    let newProductButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
     
     var products: [Product] = []
 
@@ -20,7 +19,7 @@ class ProductTableViewController: UITableViewController {
         navigationItem.searchController = searchBarController
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.title = "Products"
-        navigationItem.rightBarButtonItem = newProductButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewProduct))
         
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: String(describing: ProductTableViewCell.self))
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -70,5 +69,10 @@ class ProductTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
+    @objc func addNewProduct() {
+        let controller = AddEditProductController(style: .grouped)
+        let newProductController = UINavigationController(rootViewController: controller)
+        present(newProductController, animated: true, completion: nil)
+    }
 }
 

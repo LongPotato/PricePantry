@@ -25,6 +25,8 @@
 		1CFC3B0B200C16D8004A06AE /* ProductDetailsActionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC3B0A200C16D8004A06AE /* ProductDetailsActionViewCell.swift */; };
 		1CFC3B0F200D6DAD004A06AE /* SampleTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC3B0E200D6DAD004A06AE /* SampleTestViewController.swift */; };
 		1CFC3B112012BD32004A06AE /* ProductPriceViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC3B102012BD32004A06AE /* ProductPriceViewCell.swift */; };
+		8B60537E201A8A1200217FEB /* AddEditProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B60537D201A8A1200217FEB /* AddEditProductController.swift */; };
+		8B605380201A8DE600217FEB /* AddEditProductHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +50,8 @@
 		1CFC3B0A200C16D8004A06AE /* ProductDetailsActionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsActionViewCell.swift; sourceTree = "<group>"; };
 		1CFC3B0E200D6DAD004A06AE /* SampleTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleTestViewController.swift; sourceTree = "<group>"; };
 		1CFC3B102012BD32004A06AE /* ProductPriceViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPriceViewCell.swift; sourceTree = "<group>"; };
+		8B60537D201A8A1200217FEB /* AddEditProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductController.swift; sourceTree = "<group>"; };
+		8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +124,7 @@
 				1C76F10420045CFD009C9F26 /* ProductDetailsTitleViewCell.swift */,
 				1CFC3B0A200C16D8004A06AE /* ProductDetailsActionViewCell.swift */,
 				1CFC3B102012BD32004A06AE /* ProductPriceViewCell.swift */,
+				8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -131,6 +136,7 @@
 				1C76F0F620045869009C9F26 /* ProductDetailsViewController.swift */,
 				1CFC3B0E200D6DAD004A06AE /* SampleTestViewController.swift */,
 				1C1CC9532013D62C002A163F /* AddEditPriceController.swift */,
+				8B60537D201A8A1200217FEB /* AddEditProductController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -219,8 +225,10 @@
 				1C1CC95C20140432002A163F /* BaseControlCell.swift in Sources */,
 				1CFC3B0F200D6DAD004A06AE /* SampleTestViewController.swift in Sources */,
 				1C1CC96020154C0E002A163F /* LargeEntryCell.swift in Sources */,
+				8B605380201A8DE600217FEB /* AddEditProductHeaderView.swift in Sources */,
 				1C76F10520045CFD009C9F26 /* ProductDetailsTitleViewCell.swift in Sources */,
 				1C76F10220045BBE009C9F26 /* ProductDetailsHeaderView.swift in Sources */,
+				8B60537E201A8A1200217FEB /* AddEditProductController.swift in Sources */,
 				1C1CC95E2014464C002A163F /* DatePickerCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
