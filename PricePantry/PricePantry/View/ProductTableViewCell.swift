@@ -68,6 +68,7 @@ class ProductTableViewCell: UITableViewCell {
     }
     
     func updateCellData(product: ProductMO) {
+        productPrice.text = nil
         productTitle.text = product.name
         
         if let image = product.image {

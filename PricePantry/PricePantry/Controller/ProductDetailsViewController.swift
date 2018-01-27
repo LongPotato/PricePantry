@@ -99,6 +99,8 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         }
     }
     
+    // MARK: Tableview dataSource & delegate
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -135,6 +137,43 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
 
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if (indexPath.section == 0) {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete", handler: {
+            (action, sourceView, completionHandler) in
+            
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                let context = appDelegate.persistentContainer.viewContext
+                
+                // Because price cells are at section 1, but NSFetchedResult expects section 0
+                var index = indexPath
+                index.section = 0
+                let priceToDelete = self.fetchResultController.object(at: index)
+                
+                context.delete(priceToDelete)
+                appDelegate.saveContext()
+            }
+            
+            completionHandler(true)
+        })
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
+    }
+    
+    // MARK: Scrollview delegate
+    
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         headerView.scrollViewDidScoll(scrollView: scrollView)
     }
@@ -166,17 +205,17 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         switch(type) {
         case .insert:
             if let newIndexPath = newIndexPath {
-                let index = IndexPath(row: newIndexPath.row, section: 1) // Prices are at section 1
+                let index = getPriceCellIndexPath(indexPath: newIndexPath)
                 tableView.insertRows(at: [index], with: .fade)
             }
         case .delete:
             if let indexPath = indexPath {
-                let index = IndexPath(row: indexPath.row, section: 1)
+                let index = getPriceCellIndexPath(indexPath: indexPath)
                 tableView.deleteRows(at: [index], with: .fade)
             }
         case .update:
             if let indexPath = indexPath {
-                let index = IndexPath(row: indexPath.row, section: 1)
+                let index = getPriceCellIndexPath(indexPath: indexPath)
                 tableView.reloadRows(at: [index], with: .fade)
             }
         default:
@@ -190,5 +229,12 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+    }
+    
+    // MARK: Helper function
+    
+    func getPriceCellIndexPath(indexPath: IndexPath) -> IndexPath {
+        // Price cells are at section 1
+        return IndexPath(row: indexPath.row, section: 1)
     }
 }

@@ -51,6 +51,8 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         }
     }
     
+    // MARK: TableView dataSource & delegate
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count;
     }
@@ -68,6 +70,34 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         navigationController?.pushViewController(detailsViewController, animated: true)
         tableView.deselectRow(at: indexPath, animated: false)
     }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete", handler: {
+            (action, sourceView, completionHandler) in
+            
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                let context = appDelegate.persistentContainer.viewContext
+                let productToDelete = self.fetchResultController.object(at: indexPath)
+                
+                context.delete(productToDelete)
+                
+                if let pricesToDelete = productToDelete.prices?.allObjects as? [PriceMO] {
+                    for price in pricesToDelete {
+                        context.delete(price)
+                    }
+                }
+                
+                appDelegate.saveContext()
+            }
+            
+            completionHandler(true)
+        })
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
+    }
+    
+    // MARK: Navgiation bar action
     
     @objc func addNewProduct() {
         let controller = AddEditProductController(style: .grouped)
