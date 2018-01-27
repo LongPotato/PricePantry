@@ -87,7 +87,6 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     
     override func viewWillAppear(_ animated: Bool) {
         // Transparent navigation bar
-        tableView.reloadData()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.tintColor = .white
@@ -271,6 +270,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     
     @objc func editProduct() {
         let controller = AddEditProductController(product: product, style: .grouped)
+        controller.detailsTableView = tableView
         let newProductController = UINavigationController(rootViewController: controller)
         
         self.present(newProductController, animated: true, completion: nil)

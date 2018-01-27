@@ -14,6 +14,7 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
     var productNameCell: LargeEntryCell!
     var servingNumberCell: EntryCellWithLabel!
     var product: ProductMO!
+    var detailsTableView: UITableView?
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
@@ -165,6 +166,12 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                     }
                     
                     appDelegate.saveContext()
+                    
+                    if (detailsTableView != nil) {
+                        let index = IndexPath(row: 0, section: 0)
+                        detailsTableView?.reloadRows(at: [index], with: .fade)
+                    }
+                    
                     cancelAndExitPage()
                 }
             }
