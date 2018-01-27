@@ -7,18 +7,21 @@
 //
 
 import UIKit
+import CoreData
 
-class ProducDetailsViewController: UITableViewController, DetailsViewCellActionDelegate {
-    private var product: Product?
+class ProducDetailsViewController: UITableViewController, DetailsViewCellActionDelegate, NSFetchedResultsControllerDelegate {
+    private var product: ProductMO!
+    private var prices: [PriceMO]! = []
     private var defaultTintColor: UIColor?
     private let tableViewHeaderHeight: CGFloat = 250
     var headerView: ProductDetailsHeaderView!
+    var fetchResultController: NSFetchedResultsController<PriceMO>!
     
     init() {
         super.init(style: .plain)
     }
     
-    convenience init(product: Product) {
+    convenience init(product: ProductMO) {
         self.init()
         self.product = product
     }
@@ -43,8 +46,9 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         tableView.showsVerticalScrollIndicator = false
         
         headerView = ProductDetailsHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: tableViewHeaderHeight))
-        if let image = product?.image {
-            headerView.updateImage(image: image)
+        if let image = product.image {
+            let uiImage = UIImage(data: image)
+            headerView.updateImage(image: uiImage!)
         } else {
             headerView.updateImage(image: #imageLiteral(resourceName: "placeholder"))
         }
@@ -54,6 +58,30 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         // Tint color of this view is white.
         // Save the blue tint color so when we exit this view we can restore it.
         defaultTintColor = navigationController?.navigationBar.tintColor
+        
+        setUpPrices()
+    }
+    
+    func setUpPrices() {
+        let fetchRequest: NSFetchRequest<PriceMO> = PriceMO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "timeStamp", ascending: false)
+        fetchRequest.predicate = NSPredicate(format: "product == %@", product)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let context = appDelegate.persistentContainer.viewContext
+            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchResultController.delegate = self
+            
+            do {
+                try fetchResultController.performFetch()
+                if let fetchedObjects = fetchResultController.fetchedObjects {
+                    prices = fetchedObjects
+                }
+            } catch {
+                print(error)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,7 +110,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
             return 2
         default:
             // Section for price cells
-            return product!.prices.count
+            return prices.count
         }
     }
     
@@ -101,7 +129,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
             }
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductPriceViewCell.self)) as! ProductPriceViewCell
-            cell.updateData(price: product!.prices[indexPath.row])
+            cell.updateData(price: prices[indexPath.row])
             return cell
         }
 
@@ -124,8 +152,43 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     func addPriceButtonTapped() {
         let controller = AddEditPriceController(style: .grouped)
         controller.selectedProduct = product
-        controller.detailsPageTableView = tableView
         let newPriceController = UINavigationController(rootViewController: controller)
         present(newPriceController, animated: true, completion: nil)
+    }
+    
+    // MARK: CoreData delegate
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch(type) {
+        case .insert:
+            if let newIndexPath = newIndexPath {
+                let index = IndexPath(row: newIndexPath.row, section: 1) // Prices are at section 1
+                tableView.insertRows(at: [index], with: .fade)
+            }
+        case .delete:
+            if let indexPath = indexPath {
+                let index = IndexPath(row: indexPath.row, section: 1)
+                tableView.deleteRows(at: [index], with: .fade)
+            }
+        case .update:
+            if let indexPath = indexPath {
+                let index = IndexPath(row: indexPath.row, section: 1)
+                tableView.reloadRows(at: [index], with: .fade)
+            }
+        default:
+            tableView.reloadData()
+        }
+        
+        if let fetchedObjects = controller.fetchedObjects {
+            prices = fetchedObjects as! [PriceMO]
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
 }

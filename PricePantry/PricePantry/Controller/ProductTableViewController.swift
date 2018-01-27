@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
-class ProductTableViewController: UITableViewController {
+class ProductTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     let searchBarController = UISearchController(searchResultsController: nil)
+    var fetchResultController: NSFetchedResultsController<ProductMO>!
     
-    var products: [Product] = []
+    var products: [ProductMO] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,26 +31,24 @@ class ProductTableViewController: UITableViewController {
     }
     
     func setUpProducts() {
-        let product1 = Product(name: "Jiff peanut butter, with a veryyyy long name like this. Let's see!!", image: #imageLiteral(resourceName: "food_can"))
-        let product2 = Product(name: "Chicken breast", image: #imageLiteral(resourceName: "chicken"))
-        let product3 = Product(name: "Banana")
+        let fetchRequest: NSFetchRequest<ProductMO> = ProductMO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
         
-        self.products = [product1, product2, product3]
-        
-//        var prices: [Price] = []
-//        
-//        for i in 0...9 {
-//            let price = Price(price: 18.45, timeStamp: Date())
-//            if (i % 2 == 0) {
-//                price.store = "Costco"
-//            } else if (i % 3 == 0) {
-//                price.store = "Amazon"
-//            }
-//            prices.append(price)
-//        }
-//        
-//        product1.prices = prices
-//        product3.prices = prices
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let context = appDelegate.persistentContainer.viewContext
+            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchResultController.delegate = self
+            
+            do {
+                try fetchResultController.performFetch()
+                if let fetchedObjects = fetchResultController.fetchedObjects {
+                    products = fetchedObjects
+                }
+            } catch {
+                print(error)
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -74,5 +74,39 @@ class ProductTableViewController: UITableViewController {
         let newProductController = UINavigationController(rootViewController: controller)
         present(newProductController, animated: true, completion: nil)
     }
+    
+    // MARK: CoreData delegate
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch (type) {
+        case .insert:
+            if let newIndexPath = newIndexPath {
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
+        case .delete:
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .update:
+            if let indexPath = indexPath {
+                tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+        default:
+            tableView.reloadData()
+        }
+        
+        if let fetchedObjects = controller.fetchedObjects {
+            products = fetchedObjects as! [ProductMO]
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
 }
 

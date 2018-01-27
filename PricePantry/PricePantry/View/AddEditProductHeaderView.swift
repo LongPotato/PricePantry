@@ -23,10 +23,10 @@ class AddEditProducHeaderView: UIView {
         
         addSubview(imagePicker)
         
-        imagePicker.widthAnchor.constraint(equalToConstant: frame.width).isActive = true
-        imagePicker.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0).isActive = true
-        imagePicker.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
-        imagePicker.heightAnchor.constraint(equalToConstant: frame.height).isActive = true
+        imagePicker.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        imagePicker.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        imagePicker.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        imagePicker.topAnchor.constraint(equalTo: topAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

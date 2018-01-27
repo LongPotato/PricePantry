@@ -55,10 +55,10 @@ class ProductPriceViewCell: UITableViewCell {
          fatalError("init(coder:) has not been implemented")
     }
     
-    func updateData(price: Price) {
+    func updateData(price: PriceMO) {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        let strDate = formatter.string(from: price.timeStamp)
+        let strDate = formatter.string(from: price.timeStamp!)
         
         var leftLabelText = strDate
         

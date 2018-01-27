@@ -8,14 +8,16 @@
 
 import UIKit
 
-class AddEditProductController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddEditProductController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     var headerView: AddEditProducHeaderView!
+    var productNameCell: LargeEntryCell!
+    var product: ProductMO!
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
         
         navigationItem.title = "Add Product"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .done, target: self, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .done, target: self, action: #selector(submitProduct))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelAndExitPage))
         
         headerView = AddEditProducHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
@@ -38,10 +40,10 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self), for: indexPath) as! LargeEntryCell
-        cell.updateHeight(constant: 100)
-        cell.inputTextField.placeholder = "Product name"
-        return cell
+        productNameCell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self), for: indexPath) as! LargeEntryCell
+        productNameCell.updateHeight(constant: 100)
+        productNameCell.inputTextField.placeholder = "Product name"
+        return productNameCell
     }
     
     @objc func imagePickerTapped() {
@@ -82,11 +84,35 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             headerView.imagePicker.image = selectedImage
         }
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
     }
     
     @objc func cancelAndExitPage() {
+        view.endEditing(true)
         dismiss(animated: true, completion: nil)
     }
     
+    @objc func submitProduct() {
+        productNameCell.inputTextField.resignFirstResponder()
+        
+        if let name = productNameCell.inputTextField.text {
+            if (name.isEmpty) {
+                let alert = UIAlertController(title: "Error", message: "Name can not be blank", preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+                alert.addAction(cancelAction)
+                
+                present(alert, animated: true, completion: nil)
+            } else {
+                if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                    product = ProductMO(context: appDelegate.persistentContainer.viewContext)
+                    product.name = productNameCell.inputTextField.text
+                    product.image = UIImagePNGRepresentation(headerView.imagePicker.image!)
+                    
+                    appDelegate.saveContext()
+                    cancelAndExitPage()
+                }
+            }
+        }
+    }
 }

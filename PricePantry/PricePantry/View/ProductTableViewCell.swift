@@ -54,7 +54,7 @@ class ProductTableViewCell: UITableViewCell {
         productTitle.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         productTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 26).isActive = true
         productTitle.rightAnchor.constraint(equalTo: productImage.leftAnchor, constant: -20).isActive = true
-        productTitle.bottomAnchor.constraint(equalTo: productPrice.topAnchor, constant: -3).isActive = true
+        productTitle.bottomAnchor.constraint(equalTo: productPrice.topAnchor, constant: -5).isActive = true
         
         productImage.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
         productImage.widthAnchor.constraint(equalToConstant: 78).isActive = true
@@ -67,9 +67,16 @@ class ProductTableViewCell: UITableViewCell {
         productPrice.heightAnchor.constraint(equalToConstant: 18).isActive = true
     }
     
-    func updateCellData(product: Product) {
+    func updateCellData(product: ProductMO) {
         productTitle.text = product.name
-        productImage.image = product.image
-        productPrice.text = "$23.23"
+        
+        if let image = product.image {
+            productImage.image = UIImage(data: image)
+        }
+        
+        if let prices = product.prices?.allObjects as? [PriceMO], prices.count > 0 {
+            // Display the most recent price
+            productPrice.text = "$" + String(prices[prices.count - 1].price)
+        }
     }
 }

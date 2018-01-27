@@ -27,6 +27,7 @@
 		1CFC3B112012BD32004A06AE /* ProductPriceViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC3B102012BD32004A06AE /* ProductPriceViewCell.swift */; };
 		8B60537E201A8A1200217FEB /* AddEditProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B60537D201A8A1200217FEB /* AddEditProductController.swift */; };
 		8B605380201A8DE600217FEB /* AddEditProductHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */; };
+		8B6053A4201BB87D00217FEB /* PricePantry.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A2201BB87D00217FEB /* PricePantry.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		1CFC3B102012BD32004A06AE /* ProductPriceViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPriceViewCell.swift; sourceTree = "<group>"; };
 		8B60537D201A8A1200217FEB /* AddEditProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductController.swift; sourceTree = "<group>"; };
 		8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductHeaderView.swift; sourceTree = "<group>"; };
+		8B6053A3201BB87D00217FEB /* PricePantry.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PricePantry.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				1C76F0F220045869009C9F26 /* Assets.xcassets */,
 				1C76F0F320045869009C9F26 /* Info.plist */,
 				1C76F0F420045869009C9F26 /* LaunchScreen.storyboard */,
+				8B6053A2201BB87D00217FEB /* PricePantry.xcdatamodeld */,
 			);
 			path = PricePantry;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C1CC9572013E53E002A163F /* CellActionDelegate.swift in Sources */,
+				8B6053A4201BB87D00217FEB /* PricePantry.xcdatamodeld in Sources */,
 				1C76F10020045869009C9F26 /* ProductTableViewController.swift in Sources */,
 				1C1CC9542013D62C002A163F /* AddEditPriceController.swift in Sources */,
 				1C76F0F920045869009C9F26 /* AppDelegate.swift in Sources */,
@@ -399,6 +403,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8B6053A2201BB87D00217FEB /* PricePantry.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8B6053A3201BB87D00217FEB /* PricePantry.xcdatamodel */,
+			);
+			currentVersion = 8B6053A3201BB87D00217FEB /* PricePantry.xcdatamodel */;
+			path = PricePantry.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1C6B71B82000135B00221DF0 /* Project object */;
 }

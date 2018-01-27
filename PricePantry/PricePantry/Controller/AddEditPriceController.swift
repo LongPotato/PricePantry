@@ -21,8 +21,7 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
     let displayCellIndentifier = "displayCelIndentifier"
     var datePickerCellDisplayed = false
     
-    var priceObject: Price?
-    var selectedProduct: Product?
+    var selectedProduct: ProductMO!
     var detailsPageTableView: UITableView?
     
     override init(style: UITableViewStyle) {
@@ -35,13 +34,8 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
     
     override func viewDidLoad() {
         navigationItem.title = "New Price"
-        var saveButtonText = "Save"
         
-        if (priceObject == nil) {
-            saveButtonText = "Add"
-        }
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: saveButtonText, style: .done, target: self, action: #selector(submitPrice))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .done, target: self, action: #selector(submitPrice))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelAndExitPage))
         
         tableView.keyboardDismissMode = .onDrag
@@ -208,19 +202,23 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         let store = getStoreNameValue()
         let notes = getNotesValue()
         
-        priceObject = Price(price: price, timeStamp: timeStamp, store: store, notes: notes, quantity: quantity, unitPrice: unitPrice)
-        
-        if let product = selectedProduct {
-            product.prices.append(priceObject!)
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let priceObject = PriceMO(context: appDelegate.persistentContainer.viewContext)
+            priceObject.price = price
+            priceObject.quantity = quantity
+            priceObject.unitPrice = unitPrice
+            priceObject.timeStamp = timeStamp
+            priceObject.store = store
+            priceObject.notes = notes
+            priceObject.product = selectedProduct
+            appDelegate.saveContext()
         }
         
-        if let tableView = detailsPageTableView {
-            tableView.reloadData()
-        }
         cancelAndExitPage()
     }
     
     @objc func cancelAndExitPage() {
+        view.endEditing(true)
         dismiss(animated: true, completion: nil)
     }
     
