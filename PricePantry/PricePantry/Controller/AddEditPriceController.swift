@@ -45,6 +45,8 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         tableView.register(LargeEntryCell.self, forCellReuseIdentifier: String(describing: LargeEntryCell.self))
     }
     
+    // MARK: Tableview
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
@@ -154,6 +156,8 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         tableView.endUpdates()
     }
     
+    // MARK: Helper func
+    
     func getDatePickerIndexPath(selectCellIndexPath: IndexPath) -> IndexPath {
         return IndexPath(row: selectCellIndexPath.row + 1, section: 1)
     }
@@ -193,6 +197,8 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         
         unitPriceCell.detailTextLabel!.text = "$" + String(unitPrice)
     }
+    
+    // MARK: Navigation bar action
     
     @objc func submitPrice() {
         let price = getPriceValue()

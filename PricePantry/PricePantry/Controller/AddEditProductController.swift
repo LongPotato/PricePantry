@@ -31,6 +31,8 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Tableview dataSource & delegate
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -45,6 +47,8 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         productNameCell.inputTextField.placeholder = "Product name"
         return productNameCell
     }
+    
+    // MARK: Image picker
     
     @objc func imagePickerTapped() {
         let photoSourceRequestController = UIAlertController(title: nil, message: "Choose your photo source", preferredStyle: .actionSheet)
@@ -86,6 +90,8 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         }
         picker.dismiss(animated: true, completion: nil)
     }
+    
+    // MARK: Navigation bar action
     
     @objc func cancelAndExitPage() {
         view.endEditing(true)
