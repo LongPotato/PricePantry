@@ -19,6 +19,6 @@ protocol DetailsViewCellActionDelegate {
     func addPriceButtonTapped()
 }
 
-protocol AddEditPriceCellActionDelegate{
+protocol EntryCellWithLabelDelegate{
     func inputFieldTapped()
 }

@@ -87,6 +87,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     
     override func viewWillAppear(_ animated: Bool) {
         // Transparent navigation bar
+        tableView.reloadData()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.tintColor = .white
@@ -128,6 +129,13 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductDetailsTitleViewCell.self)) as! ProductDetailsTitleViewCell
                 cell.nameLabel.text = product?.name
+                
+                if product.servings > 0 {
+                    cell.servingLabel.text = "Servings: " + String(product.servings)
+                } else {
+                    cell.servingLabel.text = nil
+                }
+                
                 return cell
             default:
                 let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductDetailsActionViewCell.self)) as! ProductDetailsActionViewCell

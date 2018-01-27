@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddEditPriceController: UITableViewController, AddEditPriceCellActionDelegate {
+class AddEditPriceController: UITableViewController, EntryCellWithLabelDelegate {
     var priceCell: EntryCellWithLabel!
     var storeCell: EntryCellWithLabel!
     var selectDatePickerCell: UITableViewCell!

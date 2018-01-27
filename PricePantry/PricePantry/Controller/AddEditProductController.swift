@@ -8,9 +8,11 @@
 
 import UIKit
 
-class AddEditProductController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class AddEditProductController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EntryCellWithLabelDelegate  {
+    
     var headerView: AddEditProducHeaderView!
     var productNameCell: LargeEntryCell!
+    var servingNumberCell: EntryCellWithLabel!
     var product: ProductMO!
     
     override init(style: UITableViewStyle) {
@@ -25,6 +27,7 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         tableView.tableHeaderView = headerView
         
         tableView.register(LargeEntryCell.self, forCellReuseIdentifier: String(describing: LargeEntryCell.self))
+        tableView.register(EntryCellWithLabel.self, forCellReuseIdentifier: String(describing: EntryCellWithLabel.self))
     }
     
     /**
@@ -45,7 +48,7 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
     // MARK: Tableview dataSource & delegate
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,15 +56,34 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        productNameCell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self), for: indexPath) as! LargeEntryCell
-        productNameCell.updateHeight(constant: 100)
-        productNameCell.inputTextField.placeholder = "Product name"
-        
-        if let product = product {
-            productNameCell.inputTextField.text = product.name
+        if (indexPath.section == 0) {
+            productNameCell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self), for: indexPath) as! LargeEntryCell
+            productNameCell.updateHeight(constant: 100)
+            productNameCell.inputTextField.placeholder = "Product name"
+            
+            if let product = product {
+                productNameCell.inputTextField.text = product.name
+            }
+            
+            return productNameCell
         }
         
-        return productNameCell
+        servingNumberCell = tableView.dequeueReusableCell(withIdentifier: String(describing: EntryCellWithLabel.self), for: indexPath) as! EntryCellWithLabel
+        servingNumberCell.cellActionDelegate = self
+        servingNumberCell.updateLabels(keyboardType: .decimalPad, label: "Servings", placeHolder: "# Servings")
+        
+        if product.servings > 0 {
+                servingNumberCell.inputTextField.text = String(product.servings)
+        }
+        
+        return servingNumberCell
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if (section == 1) {
+            return "Number of servings for one unit."
+        }
+        return nil
     }
     
     // MARK: Image picker
@@ -135,10 +157,22 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                     product.name = productNameCell.inputTextField.text
                     product.image = UIImagePNGRepresentation(headerView.imagePicker.image!)
                     
+                    if let servings = servingNumberCell.inputTextField.text, !servings.isEmpty {
+                        product.servings = Double(servings)!
+                    } else {
+                        // No serving number entered, default to 0
+                        product.servings = 0
+                    }
+                    
                     appDelegate.saveContext()
                     cancelAndExitPage()
                 }
             }
         }
+    }
+    
+    // MARK: EntryCellWithLabelDelegate
+    
+    func inputFieldTapped() {
     }
 }

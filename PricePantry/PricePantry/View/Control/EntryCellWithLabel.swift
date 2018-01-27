@@ -25,7 +25,7 @@ class EntryCellWithLabel: BaseControlCell, UITextFieldDelegate {
         return textField
     }()
     
-    var cellActionDelegate: AddEditPriceCellActionDelegate!
+    var cellActionDelegate: EntryCellWithLabelDelegate!
     
     override func setUpViews() {
         addSubview(nameLabel)
