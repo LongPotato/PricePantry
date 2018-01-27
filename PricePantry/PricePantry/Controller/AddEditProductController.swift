@@ -73,8 +73,8 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         servingNumberCell.cellActionDelegate = self
         servingNumberCell.updateLabels(keyboardType: .decimalPad, label: "Servings", placeHolder: "# Servings")
         
-        if product.servings > 0 {
-                servingNumberCell.inputTextField.text = String(product.servings)
+        if product != nil && product.servings > 0 {
+            servingNumberCell.inputTextField.text = String(product.servings)
         }
         
         return servingNumberCell
