@@ -28,6 +28,7 @@
 		8B60537E201A8A1200217FEB /* AddEditProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B60537D201A8A1200217FEB /* AddEditProductController.swift */; };
 		8B605380201A8DE600217FEB /* AddEditProductHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */; };
 		8B6053A4201BB87D00217FEB /* PricePantry.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A2201BB87D00217FEB /* PricePantry.xcdatamodeld */; };
+		8B6053A7201C673000217FEB /* NavigationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A6201C673000217FEB /* NavigationExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		8B60537D201A8A1200217FEB /* AddEditProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductController.swift; sourceTree = "<group>"; };
 		8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductHeaderView.swift; sourceTree = "<group>"; };
 		8B6053A3201BB87D00217FEB /* PricePantry.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PricePantry.xcdatamodel; sourceTree = "<group>"; };
+		8B6053A6201C673000217FEB /* NavigationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 		1C76F0F020045869009C9F26 /* PricePantry */ = {
 			isa = PBXGroup;
 			children = (
+				8B6053A5201C66E500217FEB /* Extension */,
 				1C1CC9552013E4F8002A163F /* Protocol */,
 				1C1CC9522013B7DC002A163F /* Model */,
 				1C76F10320045C40009C9F26 /* View */,
@@ -142,6 +145,14 @@
 				8B60537D201A8A1200217FEB /* AddEditProductController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		8B6053A5201C66E500217FEB /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				8B6053A6201C673000217FEB /* NavigationExtension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,6 +243,7 @@
 				8B605380201A8DE600217FEB /* AddEditProductHeaderView.swift in Sources */,
 				1C76F10520045CFD009C9F26 /* ProductDetailsTitleViewCell.swift in Sources */,
 				1C76F10220045BBE009C9F26 /* ProductDetailsHeaderView.swift in Sources */,
+				8B6053A7201C673000217FEB /* NavigationExtension.swift in Sources */,
 				8B60537E201A8A1200217FEB /* AddEditProductController.swift in Sources */,
 				1C1CC95E2014464C002A163F /* DatePickerCell.swift in Sources */,
 			);

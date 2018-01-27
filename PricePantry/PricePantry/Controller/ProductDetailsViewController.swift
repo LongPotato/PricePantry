@@ -34,6 +34,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         super.viewDidLoad()
         
         navigationItem.largeTitleDisplayMode = .never
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "edit-nav"), style: .plain, target: self, action: #selector(editProduct))
         
         tableView.register(ProductDetailsTitleViewCell.self, forCellReuseIdentifier: String(describing: ProductDetailsTitleViewCell.self))
         tableView.register(ProductDetailsActionViewCell.self, forCellReuseIdentifier: String(describing: ProductDetailsActionViewCell.self))
@@ -97,6 +98,10 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         if let tintColor = defaultTintColor {
             navigationController?.navigationBar.tintColor = tintColor
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     // MARK: Tableview dataSource & delegate
@@ -188,6 +193,8 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
             completionHandler(true)
         }
         
+        editAction.backgroundColor = UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1)
+        
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return swipeConfiguration
     }
@@ -249,6 +256,16 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+    }
+    
+    
+    // MARK: Navigation
+    
+    @objc func editProduct() {
+        let controller = AddEditProductController(product: product, style: .grouped)
+        let newProductController = UINavigationController(rootViewController: controller)
+        
+        self.present(newProductController, animated: true, completion: nil)
     }
     
     // MARK: Helper function

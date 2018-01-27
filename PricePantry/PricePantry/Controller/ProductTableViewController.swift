@@ -72,28 +72,41 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete", handler: {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil, handler: {
             (action, sourceView, completionHandler) in
             
-            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-                let context = appDelegate.persistentContainer.viewContext
-                let productToDelete = self.fetchResultController.object(at: indexPath)
-                
-                context.delete(productToDelete)
-                
-                if let pricesToDelete = productToDelete.prices?.allObjects as? [PriceMO] {
-                    for price in pricesToDelete {
-                        context.delete(price)
-                    }
-                }
-                
-                appDelegate.saveContext()
-            }
+            let confirmAlert = UIAlertController(title: "Comfirm", message: "Are you sure you want to delete?", preferredStyle: .alert)
             
-            completionHandler(true)
+            
+            let yesAction = UIAlertAction(title: "Yes", style: .destructive, handler: {(action) in
+                if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                    let context = appDelegate.persistentContainer.viewContext
+                    let productToDelete = self.fetchResultController.object(at: indexPath)
+                    
+                    context.delete(productToDelete)
+                    
+                    if let pricesToDelete = productToDelete.prices?.allObjects as? [PriceMO] {
+                        for price in pricesToDelete {
+                            context.delete(price)
+                        }
+                    }
+                    
+                    appDelegate.saveContext()
+                    completionHandler(true)
+                }
+            })
+            
+            let noAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(action) in
+                completionHandler(false)
+            })
+
+            confirmAlert.addAction(yesAction)
+            confirmAlert.addAction(noAction)
+            
+            self.present(confirmAlert, animated: true, completion: nil)
         })
         
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, sourceView, completionHandler) in
+        let editAction = UIContextualAction(style: .normal, title: nil) { (action, sourceView, completionHandler) in
             let productToEdit = self.fetchResultController.object(at: indexPath)
             let controller = AddEditProductController(product: productToEdit, style: .grouped)
             let newProductController = UINavigationController(rootViewController: controller)
@@ -101,6 +114,11 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
             self.present(newProductController, animated: true, completion: nil)
             completionHandler(true)
         }
+        
+        deleteAction.image = #imageLiteral(resourceName: "delete-context")
+        
+        editAction.backgroundColor = UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1)
+        editAction.image = #imageLiteral(resourceName: "edit-context")
         
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return swipeConfiguration
