@@ -77,7 +77,7 @@ class ProductTableViewCell: UITableViewCell {
         
         if let prices = product.prices?.allObjects as? [PriceMO], prices.count > 0 {
             // Display the most recent price
-            productPrice.text = "$" + String(prices[prices.count - 1].price)
+            productPrice.text = "$ " + String(prices[prices.count - 1].price)
         }
     }
 }

@@ -67,6 +67,6 @@ class ProductPriceViewCell: UITableViewCell {
         }
             
         leftLabel.text = leftLabelText
-        rightLabel.text = "$" + String(price.price)
+        rightLabel.text = "$ " + String(price.price)
     }
 }

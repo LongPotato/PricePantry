@@ -22,6 +22,7 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
     var datePickerCellDisplayed = false
     
     var selectedProduct: ProductMO!
+    var price: PriceMO?
     var detailsPageTableView: UITableView?
     
     override init(style: UITableViewStyle) {
@@ -32,11 +33,21 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         fatalError("init(coder:) has not been implemented")
     }
     
+    convenience init(price: PriceMO, style: UITableViewStyle) {
+        self.init(style: style)
+        self.price = price
+    }
+    
     override func viewDidLoad() {
         navigationItem.title = "New Price"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .done, target: self, action: #selector(submitPrice))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelAndExitPage))
+        
+        if price != nil {
+            navigationItem.rightBarButtonItem?.title = "Save"
+            navigationItem.title = "Edit Price"
+        }
         
         tableView.keyboardDismissMode = .onDrag
         
@@ -72,6 +83,11 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
             // Price section, price cell
             priceCell = getEntryCellWithLabel(indexPath: indexPath, keyboard: .decimalPad, label: "$", placeHolderText: "Price")
             priceCell.inputTextField.addTarget(self, action: #selector(priceInputChanged), for: .editingChanged)
+            
+            if let price = price {
+                priceCell.inputTextField.text = String(price.price)
+            }
+            
             return priceCell
         case 1:
             // Store & Date & Quantity section
@@ -79,13 +95,24 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
             case 0:
                 // Store cell
                 storeCell = getEntryCellWithLabel(indexPath: indexPath, keyboard: .default, label: "Store", placeHolderText: "Name")
+                
+                if let price = price {
+                    storeCell.inputTextField.text = price.store
+                }
+                
                 return storeCell
             case 1:
                 // Select date cell
                 selectDatePickerCellIndexPath = indexPath
                 selectDatePickerCell = getValue1DisplayCell(label: "Date")
                 
-                let strDate = formatDateToString(dateTime: Date())
+                var dateToDisplay = Date()
+                
+                if let price = price {
+                    dateToDisplay = price.timeStamp!
+                }
+                
+                let strDate = formatDateToString(dateTime: dateToDisplay)
                 
                 selectDatePickerCell.detailTextLabel!.text = strDate
                 selectDatePickerCell.detailTextLabel!.textColor = .black
@@ -96,23 +123,43 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
                     datePickerCell = tableView.dequeueReusableCell(withIdentifier: String(describing: DatePickerCell.self), for: indexPath) as? DatePickerCell
                     datePickerCell.datePicker.datePickerMode = .date
                     datePickerCell.datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
+                    
+                    if let price = price {
+                        datePickerCell.datePicker.setDate(price.timeStamp!, animated: true)
+                    }
+                    
                     return datePickerCell
                 } else {
                     // Quantity cell
                     quantityCell = getEntryCellWithLabel(indexPath: indexPath, keyboard: .decimalPad, label: "Quantiy", placeHolderText: "# Unit")
                     quantityCell.inputTextField.addTarget(self, action: #selector(priceInputChanged), for: .editingChanged)
+                    
+                    if let price = price {
+                        quantityCell.inputTextField.text = String(price.quantity)
+                    }
+                    
                     return quantityCell
                 }
             default:
                 // Unit price cell
                 unitPriceCell = getValue1DisplayCell(label: "Unit Price")
                 unitPriceCell.detailTextLabel!.text = "$0"
+                
+                if price != nil {
+                    priceInputChanged()
+                }
+                
                 return unitPriceCell
             }
         default:
             // Notes section, notes cell
             notesCell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self)) as! LargeEntryCell
             notesCell.inputTextField.placeholder = "Notes"
+            
+            if let price = price {
+                notesCell.inputTextField.text = price.notes
+            }
+            
             return notesCell
         }
         
@@ -209,7 +256,16 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
         let notes = getNotesValue()
         
         if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-            let priceObject = PriceMO(context: appDelegate.persistentContainer.viewContext)
+            var priceObject: PriceMO
+            
+            if let selectedPrice = self.price {
+                // Edit existing price
+                priceObject = selectedPrice
+            } else {
+                // Create new price
+                priceObject = PriceMO(context: appDelegate.persistentContainer.viewContext)
+            }
+            
             priceObject.price = price
             priceObject.quantity = quantity
             priceObject.unitPrice = unitPrice
@@ -217,6 +273,7 @@ class AddEditPriceController: UITableViewController, AddEditPriceCellActionDeleg
             priceObject.store = store
             priceObject.notes = notes
             priceObject.product = selectedProduct
+            
             appDelegate.saveContext()
         }
         

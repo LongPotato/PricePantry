@@ -137,6 +137,14 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
 
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.section == 1) {
+            return 60
+        } else {
+            return UITableViewAutomaticDimension
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -150,15 +158,16 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        // Because price cells are at section 1, but NSFetchedResult expects section 0
+        var index = indexPath
+        index.section = 0
+        
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete", handler: {
             (action, sourceView, completionHandler) in
             
             if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
                 let context = appDelegate.persistentContainer.viewContext
                 
-                // Because price cells are at section 1, but NSFetchedResult expects section 0
-                var index = indexPath
-                index.section = 0
                 let priceToDelete = self.fetchResultController.object(at: index)
                 
                 context.delete(priceToDelete)
@@ -168,7 +177,18 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
             completionHandler(true)
         })
         
-        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, sourceView, completionHandler) in
+            let priceToEdit = self.fetchResultController.object(at: index)
+            
+            let controller = AddEditPriceController(price: priceToEdit, style: .grouped)
+            controller.selectedProduct = self.product
+            let newPriceController = UINavigationController(rootViewController: controller)
+            
+            self.present(newPriceController, animated: true, completion: nil)
+            completionHandler(true)
+        }
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return swipeConfiguration
     }
     

@@ -27,6 +27,17 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         tableView.register(LargeEntryCell.self, forCellReuseIdentifier: String(describing: LargeEntryCell.self))
     }
     
+    /**
+     Contructor to use to edit an existing product
+    */
+    convenience init(product: ProductMO, style: UITableViewStyle) {
+        self.init(style: style)
+        self.product = product
+        navigationItem.rightBarButtonItem?.title! = "Save"
+        navigationItem.title = "Edit product"
+        headerView.imagePicker.image = UIImage(data: product.image!)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -45,6 +56,11 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         productNameCell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self), for: indexPath) as! LargeEntryCell
         productNameCell.updateHeight(constant: 100)
         productNameCell.inputTextField.placeholder = "Product name"
+        
+        if let product = product {
+            productNameCell.inputTextField.text = product.name
+        }
+        
         return productNameCell
     }
     
@@ -111,7 +127,11 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                 present(alert, animated: true, completion: nil)
             } else {
                 if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-                    product = ProductMO(context: appDelegate.persistentContainer.viewContext)
+                    if (product == nil) {
+                        // Create new product
+                        product = ProductMO(context: appDelegate.persistentContainer.viewContext)
+                    }
+                    
                     product.name = productNameCell.inputTextField.text
                     product.image = UIImagePNGRepresentation(headerView.imagePicker.image!)
                     

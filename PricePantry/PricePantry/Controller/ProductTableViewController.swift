@@ -93,7 +93,16 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
             completionHandler(true)
         })
         
-        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, sourceView, completionHandler) in
+            let productToEdit = self.fetchResultController.object(at: indexPath)
+            let controller = AddEditProductController(product: productToEdit, style: .grouped)
+            let newProductController = UINavigationController(rootViewController: controller)
+            
+            self.present(newProductController, animated: true, completion: nil)
+            completionHandler(true)
+        }
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return swipeConfiguration
     }
     
