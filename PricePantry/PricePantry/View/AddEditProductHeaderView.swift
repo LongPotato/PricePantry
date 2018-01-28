@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddEditProducHeaderView: UIView {
+class AddEditProductHeaderView: UIView {
     let imagePicker: UIImageView = {
         var imageView = UIImageView()
         imageView.image = #imageLiteral(resourceName: "placeholder")

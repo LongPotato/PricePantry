@@ -10,20 +10,25 @@ import UIKit
 
 class AddEditProductController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EntryCellWithLabelDelegate  {
     
-    var headerView: AddEditProducHeaderView!
+    var headerView: AddEditProductHeaderView!
     var productNameCell: LargeEntryCell!
     var servingNumberCell: EntryCellWithLabel!
-    var product: ProductMO!
     var detailsTableView: UITableView?
+    
+    var product: ProductMO!
+    var isCreatingNewProduct: Bool!
+    var controllerActionDelegate: AddEditProductControllerDelegate?
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
+        
+        isCreatingNewProduct = true
         
         navigationItem.title = "Add Product"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .done, target: self, action: #selector(submitProduct))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelAndExitPage))
         
-        headerView = AddEditProducHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
+        headerView = AddEditProductHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
         headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imagePickerTapped)))
         tableView.tableHeaderView = headerView
         
@@ -40,6 +45,7 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         navigationItem.rightBarButtonItem?.title! = "Save"
         navigationItem.title = "Edit product"
         headerView.imagePicker.image = UIImage(data: product.image!)
+        isCreatingNewProduct = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -135,6 +141,12 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
     @objc func cancelAndExitPage() {
         view.endEditing(true)
         dismiss(animated: true, completion: nil)
+        
+        if (isCreatingNewProduct) {
+            if (controllerActionDelegate != nil) {
+                controllerActionDelegate!.navigateToCreatedProductPage(product: product)
+            }
+        }
     }
     
     @objc func submitProduct() {
@@ -153,23 +165,23 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                     if (product == nil) {
                         // Create new product
                         product = ProductMO(context: appDelegate.persistentContainer.viewContext)
+                        isCreatingNewProduct = true
                     }
                     
                     product.name = productNameCell.inputTextField.text
                     
                     let pickerImage = headerView.imagePicker.image!
+                    product.image = UIImagePNGRepresentation(pickerImage)
                     
                     DispatchQueue.global(qos: .userInteractive).async {
-                        // Convert the image in background thread to prevent slow down
+                        // Resize the image in background thread to prevent slow down
                         var productThumbnail: Data?
                         
-                        let productImage = UIImagePNGRepresentation(pickerImage)
                         if let resizeImage = UIImage.resizeImage(image: pickerImage, newWidth: 156) {
                             productThumbnail = UIImagePNGRepresentation(resizeImage)
                         }
                         
                         DispatchQueue.main.async{
-                            self.product.image = productImage
                             self.product.thumbnail = productThumbnail
                             appDelegate.saveContext()
                         }

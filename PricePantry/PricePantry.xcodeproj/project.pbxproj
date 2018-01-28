@@ -30,6 +30,7 @@
 		8B6053A4201BB87D00217FEB /* PricePantry.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A2201BB87D00217FEB /* PricePantry.xcdatamodeld */; };
 		8B6053A7201C673000217FEB /* NavigationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A6201C673000217FEB /* NavigationExtension.swift */; };
 		8B6053A9201D654800217FEB /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A8201D654800217FEB /* UIImageExtension.swift */; };
+		8B6053AB201D985B00217FEB /* ControllerActionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		8B6053A3201BB87D00217FEB /* PricePantry.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PricePantry.xcdatamodel; sourceTree = "<group>"; };
 		8B6053A6201C673000217FEB /* NavigationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationExtension.swift; sourceTree = "<group>"; };
 		8B6053A8201D654800217FEB /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerActionDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				1C1CC9562013E53E002A163F /* CellActionDelegate.swift */,
+				8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B6053AB201D985B00217FEB /* ControllerActionDelegate.swift in Sources */,
 				1C1CC9572013E53E002A163F /* CellActionDelegate.swift in Sources */,
 				8B6053A4201BB87D00217FEB /* PricePantry.xcdatamodeld in Sources */,
 				8B6053A9201D654800217FEB /* UIImageExtension.swift in Sources */,

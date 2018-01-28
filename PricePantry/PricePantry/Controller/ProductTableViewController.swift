@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ProductTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class ProductTableViewController: UITableViewController, NSFetchedResultsControllerDelegate, AddEditProductControllerDelegate {
     let searchBarController = UISearchController(searchResultsController: nil)
     var fetchResultController: NSFetchedResultsController<ProductMO>!
     
@@ -66,8 +66,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailsViewController = ProducDetailsViewController(product: products[indexPath.row])
-        navigationController?.pushViewController(detailsViewController, animated: true)
+        navigateToProductPage(product: products[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
@@ -76,7 +75,6 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
             (action, sourceView, completionHandler) in
             
             let confirmAlert = UIAlertController(title: "Comfirm", message: "Are you sure you want to delete?", preferredStyle: .alert)
-            
             
             let yesAction = UIAlertAction(title: "Yes", style: .destructive, handler: {(action) in
                 if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
@@ -128,8 +126,20 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     
     @objc func addNewProduct() {
         let controller = AddEditProductController(style: .grouped)
+        controller.controllerActionDelegate = self
         let newProductController = UINavigationController(rootViewController: controller)
         present(newProductController, animated: true, completion: nil)
+    }
+    
+    func navigateToProductPage(product: ProductMO) {
+        let detailsViewController = ProducDetailsViewController(product: product)
+        navigationController?.pushViewController(detailsViewController, animated: true)
+    }
+    
+    // MARK: Add edit product controller protocol
+    
+    func navigateToCreatedProductPage(product: ProductMO) {
+        navigateToProductPage(product: product)
     }
     
     // MARK: CoreData delegate
