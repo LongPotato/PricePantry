@@ -28,17 +28,17 @@ class EntryCellWithLabel: BaseControlCell, UITextFieldDelegate {
     var cellActionDelegate: EntryCellWithLabelDelegate!
     
     override func setUpViews() {
-        addSubview(nameLabel)
-        addSubview(inputTextField)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(inputTextField)
         
         inputTextField.delegate = self
         
-        nameLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
+        nameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 15).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
         nameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 70).isActive = true
         
         inputTextField.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 5).isActive = true
-        inputTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        inputTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15).isActive = true
         inputTextField.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
     }
     

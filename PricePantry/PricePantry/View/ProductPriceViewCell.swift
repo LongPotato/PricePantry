@@ -33,21 +33,21 @@ class ProductPriceViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        addSubview(leftLabel)
-        addSubview(rightLabel)
-        addSubview(divider)
+        contentView.addSubview(leftLabel)
+        contentView.addSubview(rightLabel)
+        contentView.addSubview(divider)
         
-        leftLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+        leftLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         leftLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
         leftLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
-        rightLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+        rightLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
         rightLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
         rightLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
-        divider.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-        divider.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
-        divider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+        divider.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        divider.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 0).isActive = true
+        divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
         divider.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
     }
     

@@ -32,6 +32,8 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
         headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imagePickerTapped)))
         tableView.tableHeaderView = headerView
         
+        tableView.keyboardDismissMode = .onDrag
+        
         tableView.register(LargeEntryCell.self, forCellReuseIdentifier: String(describing: LargeEntryCell.self))
         tableView.register(EntryCellWithLabel.self, forCellReuseIdentifier: String(describing: EntryCellWithLabel.self))
     }

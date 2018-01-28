@@ -34,26 +34,25 @@ class ProductDetailsTitleViewCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         selectionStyle = .none
         
-        addSubview(nameLabel)
-        addSubview(servingLabel)
-        addSubview(divider)
-        
-        nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
-        nameLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-        nameLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -26).isActive = true
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(servingLabel)
+        contentView.addSubview(divider)
+
+        nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
+        nameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        nameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -26).isActive = true
         nameLabel.bottomAnchor.constraint(equalTo: servingLabel.topAnchor, constant: -8).isActive = true
-        
-        servingLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+
+        servingLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         servingLabel.bottomAnchor.constraint(equalTo: divider.topAnchor, constant: -20).isActive = true
-        servingLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
+        servingLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 0).isActive = true
         
-        divider.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-        divider.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+        divider.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        divider.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
         divider.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        divider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+        divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

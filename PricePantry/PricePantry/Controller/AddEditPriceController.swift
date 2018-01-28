@@ -155,6 +155,7 @@ class AddEditPriceController: UITableViewController, EntryCellWithLabelDelegate 
             // Notes section, notes cell
             notesCell = tableView.dequeueReusableCell(withIdentifier: String(describing: LargeEntryCell.self)) as! LargeEntryCell
             notesCell.inputTextField.placeholder = "Notes"
+            notesCell.updateHeight(constant: 150)
             
             if let price = price {
                 notesCell.inputTextField.text = price.notes

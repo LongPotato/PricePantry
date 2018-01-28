@@ -29,13 +29,13 @@ class ProductDetailsActionViewCell : UITableViewCell {
         
         addPriceButton.addTarget(self, action: #selector(addPriceButtonTapped), for: .touchUpInside)
         
-        addSubview(addPriceButton)
+        contentView.addSubview(addPriceButton)
         
-        addPriceButton.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
+        addPriceButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
         addPriceButton.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0).isActive = true
-        addPriceButton.widthAnchor.constraint(equalTo: widthAnchor, constant: -32).isActive = true
+        addPriceButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -32).isActive = true
         addPriceButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        addPriceButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
+        addPriceButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -21,16 +21,16 @@ class LargeEntryCell: BaseControlCell, UITextFieldDelegate {
     var heightConstraint: NSLayoutConstraint!
     
     override func setUpViews() {
-        addSubview(inputTextField)
+        contentView.addSubview(inputTextField)
         
         inputTextField.delegate = self
         
         heightConstraint = inputTextField.heightAnchor.constraint(equalToConstant: 200)
         heightConstraint.isActive = true
-        inputTextField.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
-        inputTextField.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        inputTextField.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-        inputTextField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        inputTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 15).isActive = true
+        inputTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        inputTextField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15).isActive = true
+        inputTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     }
     
     func updateHeight(constant: Int) {
