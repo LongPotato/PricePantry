@@ -26,6 +26,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: String(describing: ProductTableViewCell.self))
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 96
+        tableView.showsVerticalScrollIndicator = false
         
         setUpProducts()
     }

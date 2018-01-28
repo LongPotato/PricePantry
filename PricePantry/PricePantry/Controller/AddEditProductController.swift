@@ -141,12 +141,6 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
     @objc func cancelAndExitPage() {
         view.endEditing(true)
         dismiss(animated: true, completion: nil)
-        
-        if (isCreatingNewProduct) {
-            if (controllerActionDelegate != nil) {
-                controllerActionDelegate!.navigateToCreatedProductPage(product: product)
-            }
-        }
     }
     
     @objc func submitProduct() {
@@ -171,14 +165,15 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                     product.name = productNameCell.inputTextField.text
                     
                     let pickerImage = headerView.imagePicker.image!
-                    product.image = UIImagePNGRepresentation(pickerImage)
+                    product.image = UIImageJPEGRepresentation(pickerImage, 1)
+                    
                     
                     DispatchQueue.global(qos: .userInteractive).async {
                         // Resize the image in background thread to prevent slow down
                         var productThumbnail: Data?
                         
                         if let resizeImage = UIImage.resizeImage(image: pickerImage, newWidth: 156) {
-                            productThumbnail = UIImagePNGRepresentation(resizeImage)
+                            productThumbnail = UIImageJPEGRepresentation(resizeImage, 1)
                         }
                         
                         DispatchQueue.main.async{
@@ -206,6 +201,12 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                     }
                     
                     cancelAndExitPage()
+                    
+                    if (isCreatingNewProduct) {
+                        if (controllerActionDelegate != nil) {
+                            controllerActionDelegate!.navigateToCreatedProductPage(product: product)
+                        }
+                    }
                 }
             }
         }

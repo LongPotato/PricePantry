@@ -86,7 +86,7 @@ class ProductTableViewCell: UITableViewCell {
                     convertedImage = UIImage(data: image)
                     if let resizeImage = UIImage.resizeImage(image: convertedImage!, newWidth: 156) {
                         convertedImage = resizeImage
-                        product.thumbnail = UIImagePNGRepresentation(convertedImage)
+                        product.thumbnail = UIImageJPEGRepresentation(convertedImage, 1)
                     }
                 }
                 
