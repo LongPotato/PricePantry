@@ -37,18 +37,26 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-            let context = appDelegate.persistentContainer.viewContext
-            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-            fetchResultController.delegate = self
-            
-            do {
-                try fetchResultController.performFetch()
-                if let fetchedObjects = fetchResultController.fetchedObjects {
-                    products = fetchedObjects
+
+            // Fetch the data from storage in the background
+            DispatchQueue.global(qos: .userInitiated).async {
+                let context = appDelegate.persistentContainer.viewContext
+                self.fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+                self.fetchResultController.delegate = self
+                
+                do {
+                    try self.fetchResultController.performFetch()
+                    if let fetchedObjects = self.fetchResultController.fetchedObjects {
+                        DispatchQueue.main.async {
+                            self.products = fetchedObjects
+                            self.tableView.reloadData()
+                        }
+                    }
+                } catch {
+                    print(error)
                 }
-            } catch {
-                print(error)
             }
+
         }
     }
     
