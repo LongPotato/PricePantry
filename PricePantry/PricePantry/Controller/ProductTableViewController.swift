@@ -60,7 +60,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductTableViewCell.self), for: indexPath) as! ProductTableViewCell
         
-        cell.updateCellData(product: products[indexPath.row])
+        cell.updateCellData(indexPath: indexPath, product: products[indexPath.row])
         
         return cell
     }

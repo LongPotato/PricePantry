@@ -156,7 +156,24 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                     }
                     
                     product.name = productNameCell.inputTextField.text
-                    product.image = UIImagePNGRepresentation(headerView.imagePicker.image!)
+                    
+                    let pickerImage = headerView.imagePicker.image!
+                    
+                    DispatchQueue.global(qos: .userInteractive).async {
+                        // Convert the image in background thread to prevent slow down
+                        var productThumbnail: Data?
+                        
+                        let productImage = UIImagePNGRepresentation(pickerImage)
+                        if let resizeImage = UIImage.resizeImage(image: pickerImage, newWidth: 156) {
+                            productThumbnail = UIImagePNGRepresentation(resizeImage)
+                        }
+                        
+                        DispatchQueue.main.async{
+                            self.product.image = productImage
+                            self.product.thumbnail = productThumbnail
+                            appDelegate.saveContext()
+                        }
+                    }
                     
                     if let servings = servingNumberCell.inputTextField.text, !servings.isEmpty {
                         product.servings = Double(servings)!
@@ -167,9 +184,13 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                     
                     appDelegate.saveContext()
                     
+                    // Reload deatails serving row & image if came from details view
                     if (detailsTableView != nil) {
                         let index = IndexPath(row: 0, section: 0)
                         detailsTableView?.reloadRows(at: [index], with: .fade)
+                        
+                        let deatailsHeader = detailsTableView?.tableHeaderView as! ProductDetailsHeaderView
+                        deatailsHeader.productImageView.image = pickerImage
                     }
                     
                     cancelAndExitPage()

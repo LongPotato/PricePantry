@@ -29,6 +29,7 @@
 		8B605380201A8DE600217FEB /* AddEditProductHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */; };
 		8B6053A4201BB87D00217FEB /* PricePantry.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A2201BB87D00217FEB /* PricePantry.xcdatamodeld */; };
 		8B6053A7201C673000217FEB /* NavigationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A6201C673000217FEB /* NavigationExtension.swift */; };
+		8B6053A9201D654800217FEB /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A8201D654800217FEB /* UIImageExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductHeaderView.swift; sourceTree = "<group>"; };
 		8B6053A3201BB87D00217FEB /* PricePantry.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PricePantry.xcdatamodel; sourceTree = "<group>"; };
 		8B6053A6201C673000217FEB /* NavigationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationExtension.swift; sourceTree = "<group>"; };
+		8B6053A8201D654800217FEB /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				8B6053A6201C673000217FEB /* NavigationExtension.swift */,
+				8B6053A8201D654800217FEB /* UIImageExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 			files = (
 				1C1CC9572013E53E002A163F /* CellActionDelegate.swift in Sources */,
 				8B6053A4201BB87D00217FEB /* PricePantry.xcdatamodeld in Sources */,
+				8B6053A9201D654800217FEB /* UIImageExtension.swift in Sources */,
 				1C76F10020045869009C9F26 /* ProductTableViewController.swift in Sources */,
 				1C1CC9542013D62C002A163F /* AddEditPriceController.swift in Sources */,
 				1C76F0F920045869009C9F26 /* AppDelegate.swift in Sources */,

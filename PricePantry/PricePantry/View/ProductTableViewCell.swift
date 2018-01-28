@@ -67,13 +67,36 @@ class ProductTableViewCell: UITableViewCell {
         productPrice.heightAnchor.constraint(equalToConstant: 18).isActive = true
     }
     
-    func updateCellData(product: ProductMO) {
+    func updateCellData(indexPath: IndexPath, product: ProductMO) {
         productPrice.text = nil
         productTitle.text = product.name
+        productImage.image = nil
         
-        if let image = product.image {
-            productImage.image = UIImage(data: image)
-        }
+        tag = indexPath.row
+        
+        DispatchQueue.global(qos: .background).async(execute: {
+            if let image = product.image {
+                var convertedImage: UIImage!
+                
+                if let thumbnail = product.thumbnail {
+                    // If a thumbnail version is available, use that
+                    convertedImage = UIImage(data: thumbnail)
+                } else {
+                    // If not we resize the image to a thumbnail version, and save it
+                    convertedImage = UIImage(data: image)
+                    if let resizeImage = UIImage.resizeImage(image: convertedImage!, newWidth: 156) {
+                        convertedImage = resizeImage
+                        product.thumbnail = UIImagePNGRepresentation(convertedImage)
+                    }
+                }
+                
+                DispatchQueue.main.async(execute: {
+                    if (self.tag == indexPath.row) {
+                        self.productImage.image = convertedImage
+                    }
+                })
+            }
+        })
         
         if let prices = product.prices?.allObjects as? [PriceMO], prices.count > 0 {
             // Display the most recent price
