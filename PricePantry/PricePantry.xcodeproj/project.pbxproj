@@ -31,6 +31,7 @@
 		8B6053A7201C673000217FEB /* NavigationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A6201C673000217FEB /* NavigationExtension.swift */; };
 		8B6053A9201D654800217FEB /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A8201D654800217FEB /* UIImageExtension.swift */; };
 		8B6053AB201D985B00217FEB /* ControllerActionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */; };
+		8B6053AD201FE55F00217FEB /* TableViewBackgroundLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		8B6053A6201C673000217FEB /* NavigationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationExtension.swift; sourceTree = "<group>"; };
 		8B6053A8201D654800217FEB /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerActionDelegate.swift; sourceTree = "<group>"; };
+		8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBackgroundLoadingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 				1CFC3B0A200C16D8004A06AE /* ProductDetailsActionViewCell.swift */,
 				1CFC3B102012BD32004A06AE /* ProductPriceViewCell.swift */,
 				8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */,
+				8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				1C76F0F920045869009C9F26 /* AppDelegate.swift in Sources */,
 				1CFC3B0B200C16D8004A06AE /* ProductDetailsActionViewCell.swift in Sources */,
 				1CFC3B112012BD32004A06AE /* ProductPriceViewCell.swift in Sources */,
+				8B6053AD201FE55F00217FEB /* TableViewBackgroundLoadingView.swift in Sources */,
 				1C76F0FF20045869009C9F26 /* ProductTableViewCell.swift in Sources */,
 				1C76F0FD20045869009C9F26 /* Models.swift in Sources */,
 				1C76F0FE20045869009C9F26 /* ProductDetailsViewController.swift in Sources */,

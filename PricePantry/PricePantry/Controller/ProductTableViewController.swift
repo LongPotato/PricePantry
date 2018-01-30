@@ -23,15 +23,22 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         navigationItem.title = "Products"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewProduct))
         
-        tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: String(describing: ProductTableViewCell.self))
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 96
         tableView.showsVerticalScrollIndicator = false
+        
+        tableView.backgroundView = TableViewBackgroundLoadingView()
+        
+        tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: String(describing: ProductTableViewCell.self))
         
         setUpProducts()
     }
     
     func setUpProducts() {
+        
+        tableView.backgroundView?.isHidden = false
+        tableView.separatorStyle = .none
+        
         let fetchRequest: NSFetchRequest<ProductMO> = ProductMO.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -50,13 +57,15 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
                         DispatchQueue.main.async {
                             self.products = fetchedObjects
                             self.tableView.reloadData()
+                            
+                            self.tableView.backgroundView?.isHidden = true
+                            self.tableView.separatorStyle = .singleLine
                         }
                     }
                 } catch {
                     print(error)
                 }
             }
-
         }
     }
     
