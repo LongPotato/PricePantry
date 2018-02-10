@@ -22,6 +22,7 @@ class AddEditPriceController: UITableViewController, EntryCellWithLabelDelegate 
     var datePickerCellDisplayed = false
     
     var selectedProduct: ProductMO!
+    var copyingPrice: Bool = false
     var price: PriceMO?
     var detailsPageTableView: UITableView?
     
@@ -45,8 +46,12 @@ class AddEditPriceController: UITableViewController, EntryCellWithLabelDelegate 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelAndExitPage))
         
         if price != nil {
-            navigationItem.rightBarButtonItem?.title = "Save"
-            navigationItem.title = "Edit Price"
+            if (copyingPrice) {
+                navigationItem.title = "Copy Price"
+            } else {
+                navigationItem.rightBarButtonItem?.title = "Save"
+                navigationItem.title = "Edit Price"
+            }
         }
         
         tableView.keyboardDismissMode = .onDrag
@@ -108,7 +113,7 @@ class AddEditPriceController: UITableViewController, EntryCellWithLabelDelegate 
                 
                 var dateToDisplay = Date()
                 
-                if let price = price {
+                if let price = price, !copyingPrice {
                     dateToDisplay = price.timeStamp!
                 }
                 
@@ -125,7 +130,11 @@ class AddEditPriceController: UITableViewController, EntryCellWithLabelDelegate 
                     datePickerCell.datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
                     
                     if let price = price {
-                        datePickerCell.datePicker.setDate(price.timeStamp!, animated: true)
+                        if (copyingPrice) {
+                            datePickerCell.datePicker.setDate(Date(), animated: true)
+                        } else {
+                            datePickerCell.datePicker.setDate(price.timeStamp!, animated: true)
+                        }
                     }
                     
                     return datePickerCell
@@ -243,7 +252,7 @@ class AddEditPriceController: UITableViewController, EntryCellWithLabelDelegate 
         let quantity = getQuantityValue()
         let unitPrice = calculateUnitPrice(price: price, quantity: quantity)
         
-        unitPriceCell.detailTextLabel!.text = "$" + String(unitPrice)
+        unitPriceCell.detailTextLabel!.text = "$" + String(format: "%.2f", unitPrice)
     }
     
     // MARK: Navigation bar action
@@ -260,8 +269,13 @@ class AddEditPriceController: UITableViewController, EntryCellWithLabelDelegate 
             var priceObject: PriceMO
             
             if let selectedPrice = self.price {
-                // Edit existing price
-                priceObject = selectedPrice
+                if (copyingPrice) {
+                    // Copy existing price as new price
+                    priceObject = PriceMO(context: appDelegate.persistentContainer.viewContext)
+                } else {
+                    // Edit existing price
+                    priceObject = selectedPrice
+                }
             } else {
                 // Create new price
                 priceObject = PriceMO(context: appDelegate.persistentContainer.viewContext)

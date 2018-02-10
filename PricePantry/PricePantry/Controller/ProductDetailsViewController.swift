@@ -169,6 +169,29 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         }
     }
     
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        // Because price cells are at section 1, but NSFetchedResult expects section 0
+        var index = indexPath
+        index.section = 0
+        
+        let copyAction = UIContextualAction(style: .normal, title: "Copy") { (action, sourceView, completionHandler) in
+            let priceToEdit = self.fetchResultController.object(at: index)
+            
+            let controller = AddEditPriceController(price: priceToEdit, style: .grouped)
+            controller.selectedProduct = self.product
+            controller.copyingPrice = true
+            let newPriceController = UINavigationController(rootViewController: controller)
+            
+            self.present(newPriceController, animated: true, completion: nil)
+            completionHandler(true)
+        }
+        
+        copyAction.backgroundColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [copyAction])
+        return swipeConfiguration
+    }
+    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // Because price cells are at section 1, but NSFetchedResult expects section 0
         var index = indexPath
@@ -226,6 +249,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         let controller = AddEditPriceController(style: .grouped)
         controller.selectedProduct = product
         let newPriceController = UINavigationController(rootViewController: controller)
+        
         present(newPriceController, animated: true, completion: nil)
     }
     
