@@ -169,13 +169,17 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                     let pickerImage = headerView.imagePicker.image!
                     product.image = UIImageJPEGRepresentation(pickerImage, 1)
                     
-                    
                     DispatchQueue.global(qos: .userInteractive).async {
-                        // Resize the image in background thread to prevent slow down
+                        // We want to resize the image to smaller size to optimize the load time
+                        // Resize the images in background thread to prevent slow down
                         var productThumbnail: Data?
                         
                         if let resizeImage = UIImage.resizeImage(image: pickerImage, newWidth: 156) {
                             productThumbnail = UIImageJPEGRepresentation(resizeImage, 1)
+                        }
+                        
+                        if let resizedMainImage = UIImage.resizeImage(image: pickerImage, newWidth: 840) {
+                            self.product.image = UIImageJPEGRepresentation(resizedMainImage, 1)
                         }
                         
                         DispatchQueue.main.async{
