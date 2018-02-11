@@ -132,7 +132,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     }
     
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let addToListAction = UIContextualAction(style: .normal, title: "Add") { (action, sourceView, completionHandler) in
+        let addToListAction = UIContextualAction(style: .normal, title: nil) { (action, sourceView, completionHandler) in
             
             if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
                 let context = appDelegate.persistentContainer.viewContext
@@ -147,6 +147,9 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
             
             completionHandler(true)
         }
+        
+        addToListAction.backgroundColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+        addToListAction.image = #imageLiteral(resourceName: "add-context")
         
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [addToListAction])
         return swipeConfiguration

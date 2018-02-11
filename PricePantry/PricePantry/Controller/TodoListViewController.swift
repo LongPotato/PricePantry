@@ -74,6 +74,27 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete", handler: {
+            (action, sourceView, completionHandler) in
+            
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                let context = appDelegate.persistentContainer.viewContext
+                
+                let itemToDelete = self.items[indexPath.row]
+                
+                context.delete(itemToDelete)
+                appDelegate.saveContext()
+            }
+            
+            completionHandler(true)
+        })
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
+    }
+
     // MARK: CoreData delegate
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
