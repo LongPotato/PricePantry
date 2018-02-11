@@ -16,10 +16,10 @@ class TabBarController: UITabBarController {
         let productsTab = UINavigationController(rootViewController: ProductTableViewController())
         productsTab.tabBarItem = UITabBarItem(title: "Products", image: #imageLiteral(resourceName: "price-list-icon"), tag: 0)
         
-        let todoListTag = UINavigationController(rootViewController: ProductTableViewController())
-        todoListTag.tabBarItem = UITabBarItem(title: "Shopping", image: #imageLiteral(resourceName: "todo-list-icon"), tag: 0)
+        let todoListTab = UINavigationController(rootViewController:TodoListViewController(style: .grouped))
+        todoListTab.tabBarItem = UITabBarItem(title: "Shopping", image: #imageLiteral(resourceName: "todo-list-icon"), tag: 0)
         
-        viewControllers = [productsTab, todoListTag]
+        viewControllers = [productsTab, todoListTab]
     }
     
 }

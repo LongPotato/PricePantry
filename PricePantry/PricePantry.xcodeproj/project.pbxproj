@@ -33,6 +33,8 @@
 		8B6053AB201D985B00217FEB /* ControllerActionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */; };
 		8B6053AD201FE55F00217FEB /* TableViewBackgroundLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */; };
 		8BB8AFFE202FBF5500D406CD /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8AFFD202FBF5500D406CD /* TabBarController.swift */; };
+		8BB8B000202FF10500D406CD /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8AFFF202FF10500D406CD /* TodoListViewController.swift */; };
+		8BB8B002202FFD6000D406CD /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8B001202FFD6000D406CD /* ShoppingList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +66,8 @@
 		8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerActionDelegate.swift; sourceTree = "<group>"; };
 		8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBackgroundLoadingView.swift; sourceTree = "<group>"; };
 		8BB8AFFD202FBF5500D406CD /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		8BB8AFFF202FF10500D406CD /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
+		8BB8B001202FFD6000D406CD /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				1C76F0F520045869009C9F26 /* Models.swift */,
+				8BB8B001202FFD6000D406CD /* ShoppingList.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -154,6 +159,7 @@
 				1C1CC9532013D62C002A163F /* AddEditPriceController.swift */,
 				8B60537D201A8A1200217FEB /* AddEditProductController.swift */,
 				8BB8AFFD202FBF5500D406CD /* TabBarController.swift */,
+				8BB8AFFF202FF10500D406CD /* TodoListViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -241,12 +247,14 @@
 				8B6053AB201D985B00217FEB /* ControllerActionDelegate.swift in Sources */,
 				1C1CC9572013E53E002A163F /* CellActionDelegate.swift in Sources */,
 				8B6053A4201BB87D00217FEB /* PricePantry.xcdatamodeld in Sources */,
+				8BB8B002202FFD6000D406CD /* ShoppingList.swift in Sources */,
 				8B6053A9201D654800217FEB /* UIImageExtension.swift in Sources */,
 				1C76F10020045869009C9F26 /* ProductTableViewController.swift in Sources */,
 				1C1CC9542013D62C002A163F /* AddEditPriceController.swift in Sources */,
 				1C76F0F920045869009C9F26 /* AppDelegate.swift in Sources */,
 				1CFC3B0B200C16D8004A06AE /* ProductDetailsActionViewCell.swift in Sources */,
 				1CFC3B112012BD32004A06AE /* ProductPriceViewCell.swift in Sources */,
+				8BB8B000202FF10500D406CD /* TodoListViewController.swift in Sources */,
 				8BB8AFFE202FBF5500D406CD /* TabBarController.swift in Sources */,
 				8B6053AD201FE55F00217FEB /* TableViewBackgroundLoadingView.swift in Sources */,
 				1C76F0FF20045869009C9F26 /* ProductTableViewCell.swift in Sources */,

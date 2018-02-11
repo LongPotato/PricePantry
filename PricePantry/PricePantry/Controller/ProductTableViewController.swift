@@ -15,6 +15,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     
     var products: [ProductMO] = []
     var searchResults: [ProductMO] = []
+    var shoppingList: CurrentShoppingList?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         searchBarController.searchResultsUpdater = self
         searchBarController.dimsBackgroundDuringPresentation = false
         
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchBarController
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.title = "Products"
@@ -35,14 +37,14 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: String(describing: ProductTableViewCell.self))
         
-        setUpProducts()
+        setUpData()
     }
     
-    func setUpProducts() {
-        
+    func setUpData() {
         tableView.backgroundView?.isHidden = false
         tableView.separatorStyle = .none
         
+        // Product fetch request
         let fetchRequest: NSFetchRequest<ProductMO> = ProductMO.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -52,10 +54,33 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
             // Fetch the data from storage in the background
             DispatchQueue.global(qos: .userInitiated).async {
                 let context = appDelegate.persistentContainer.viewContext
+                
+                // Product fetch controller
                 self.fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
                 self.fetchResultController.delegate = self
                 
+                // Shopping list fetch request
+                let shoppingFetchRequest = NSFetchRequest<CurrentShoppingList>(entityName: "CurrentShoppingList")
+                
                 do {
+                    // Perform current shopping list fetch
+                    self.shoppingList = try context.fetch(shoppingFetchRequest).first
+                    
+                    // If no current list exist in the database, we create a new one and save it
+                    if (self.shoppingList == nil) {
+                        let shoppingListDescriptor = NSEntityDescription.entity(forEntityName: "CurrentShoppingList", in: context)!
+                        let shoppingListObject = NSManagedObject(entity: shoppingListDescriptor, insertInto: context)
+                        try context.save()
+                        
+                        self.shoppingList = shoppingListObject as? CurrentShoppingList
+                    }
+                    
+                    // If current shoppling list doesnt point to any list, create it
+                    if (self.shoppingList?.list == nil) {
+                        self.shoppingList?.list = ShoppingList(context: context)
+                    }
+                    
+                    // Perform product fetch
                     try self.fetchResultController.performFetch()
                     if let fetchedObjects = self.fetchResultController.fetchedObjects {
                         DispatchQueue.main.async {
@@ -104,6 +129,27 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         navigateToProductPage(product: product)
         
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let addToListAction = UIContextualAction(style: .normal, title: "Add") { (action, sourceView, completionHandler) in
+            
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                let context = appDelegate.persistentContainer.viewContext
+                
+                if let list = self.shoppingList {
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        list.addItem(for: self.products[indexPath.row], context: context)
+                        appDelegate.saveContext()
+                    }
+                }
+            }
+            
+            completionHandler(true)
+        }
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [addToListAction])
+        return swipeConfiguration
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

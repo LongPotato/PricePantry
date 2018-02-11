@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C205" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CurrentShoppingList" representedClassName="CurrentShoppingList" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingList" syncable="YES"/>
+    </entity>
     <entity name="Price" representedClassName="PriceMO" syncable="YES" codeGenerationType="class">
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -15,9 +19,22 @@
         <attribute name="servings" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="thumbnail" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <relationship name="prices" toMany="YES" deletionRule="Nullify" destinationEntity="Price" inverseName="product" inverseEntity="Price" syncable="YES"/>
+        <relationship name="shoppingItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ShoppingItem" inverseName="product" inverseEntity="ShoppingItem" syncable="YES"/>
+    </entity>
+    <entity name="ShoppingItem" representedClassName="ShoppingItem" syncable="YES" codeGenerationType="class">
+        <attribute name="checked" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingList" inverseName="items" inverseEntity="ShoppingList" syncable="YES"/>
+        <relationship name="product" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Product" inverseName="shoppingItems" inverseEntity="Product" syncable="YES"/>
+    </entity>
+    <entity name="ShoppingList" representedClassName="ShoppingList" syncable="YES" codeGenerationType="class">
+        <attribute name="completedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ShoppingItem" inverseName="list" inverseEntity="ShoppingItem" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Product" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="CurrentShoppingList" positionX="-243" positionY="221" width="128" height="75"/>
         <element name="Price" positionX="144" positionY="21" width="128" height="148"/>
+        <element name="Product" positionX="-63" positionY="-16" width="128" height="133"/>
+        <element name="ShoppingItem" positionX="-245" positionY="-18" width="128" height="88"/>
+        <element name="ShoppingList" positionX="-243" positionY="104" width="128" height="73"/>
     </elements>
 </model>
