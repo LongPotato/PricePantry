@@ -9,14 +9,18 @@
 import UIKit
 import CoreData
 
-class ProductTableViewController: UITableViewController, NSFetchedResultsControllerDelegate, AddEditProductControllerDelegate {
+class ProductTableViewController: UITableViewController, NSFetchedResultsControllerDelegate, AddEditProductControllerDelegate, UISearchResultsUpdating {
     let searchBarController = UISearchController(searchResultsController: nil)
     var fetchResultController: NSFetchedResultsController<ProductMO>!
     
     var products: [ProductMO] = []
+    var searchResults: [ProductMO] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        searchBarController.searchResultsUpdater = self
+        searchBarController.dimsBackgroundDuringPresentation = false
         
         navigationItem.searchController = searchBarController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -72,19 +76,33 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     // MARK: TableView dataSource & delegate
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return products.count;
+        if searchBarController.isActive {
+            return searchResults.count;
+        } else {
+            return products.count;
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductTableViewCell.self), for: indexPath) as! ProductTableViewCell
         
-        cell.updateCellData(indexPath: indexPath, product: products[indexPath.row])
+        let product = searchBarController.isActive ? searchResults[indexPath.row] : products[indexPath.row]
+        cell.updateCellData(indexPath: indexPath, product: product)
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        navigateToProductPage(product: products[indexPath.row])
+        var product = products[indexPath.row]
+        
+        if (searchBarController.isActive) {
+            product = searchResults[indexPath.row]
+            // Disable search controller so we can push to navigation controller
+            searchBarController.isActive = false
+        }
+        
+        navigateToProductPage(product: product)
+        
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
@@ -193,5 +211,24 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         tableView.endUpdates()
     }
     
+    // MARK: Search bar delegate & methods
+    
+    func filterContent(for searchText: String) {
+        searchResults = products.filter({
+            (product) -> Bool in
+            if let name = product.name {
+                let isMatch = name.localizedStandardContains(searchText)
+                return isMatch
+            }
+            return false
+        })
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            filterContent(for: searchText)
+            tableView.reloadData()
+        }
+    }
 }
 

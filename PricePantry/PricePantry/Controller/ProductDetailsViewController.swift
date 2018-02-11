@@ -13,7 +13,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     private var product: ProductMO!
     private var prices: [PriceMO]! = []
     private var defaultTintColor: UIColor?
-    private let tableViewHeaderHeight: CGFloat = 250
+    private let tableViewHeaderHeight: CGFloat = 210
     var headerView: ProductDetailsHeaderView!
     var fetchResultController: NSFetchedResultsController<PriceMO>!
     
@@ -35,13 +35,13 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "edit-nav"), style: .plain, target: self, action: #selector(editProduct))
+        navigationItem.title = "Details"
         
         tableView.register(ProductDetailsTitleViewCell.self, forCellReuseIdentifier: String(describing: ProductDetailsTitleViewCell.self))
         tableView.register(ProductDetailsActionViewCell.self, forCellReuseIdentifier: String(describing: ProductDetailsActionViewCell.self))
         tableView.register(ProductPriceViewCell.self, forCellReuseIdentifier: String(describing: ProductPriceViewCell.self))
         
         tableView.separatorStyle = .none
-        tableView.contentInsetAdjustmentBehavior = .never
         tableView.backgroundColor = .white
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
@@ -83,25 +83,6 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
                 print(error)
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        // Transparent navigation bar
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.tintColor = .white
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        navigationController?.navigationBar.shadowImage = nil
-        if let tintColor = defaultTintColor {
-            navigationController?.navigationBar.tintColor = tintColor
-        }
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     // MARK: Tableview dataSource & delegate

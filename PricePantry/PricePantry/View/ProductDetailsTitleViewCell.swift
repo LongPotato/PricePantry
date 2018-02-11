@@ -11,7 +11,7 @@ import UIKit
 class ProductDetailsTitleViewCell: UITableViewCell {
     var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 23, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
