@@ -21,6 +21,8 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Shopping"
         
+        tableView.register(TodoItemTableViewCell.self, forCellReuseIdentifier: String(describing: TodoItemTableViewCell.self))
+        
         setUpData()
     }
     
@@ -86,8 +88,17 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = items[indexPath.row].product!.name
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TodoItemTableViewCell.self)) as! TodoItemTableViewCell
+        let item = items[indexPath.row]
+        
+        if (item.checked) {
+            cell.checkedIcon.image = #imageLiteral(resourceName: "checked-icon")
+        } else {
+            cell.checkedIcon.image = #imageLiteral(resourceName: "unchecked-icon")
+        }
+        
+        cell.nameLabel.text = item.product!.name
+        
         return cell
     }
     
@@ -110,6 +121,16 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
         
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
         return swipeConfiguration
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let itemToUpdate = items[indexPath.row]
+            itemToUpdate.checked = !itemToUpdate.checked
+            
+            appDelegate.saveContext()
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
     }
 
     // MARK: CoreData delegate
