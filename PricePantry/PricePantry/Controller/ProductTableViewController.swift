@@ -15,7 +15,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     
     var products: [ProductMO] = []
     var searchResults: [ProductMO] = []
-    var shoppingList: CurrentShoppingList?
+    var shoppingList: ShoppingList?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +60,9 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
                 self.fetchResultController.delegate = self
                 
                 // Shopping list fetch request
-                let shoppingFetchRequest = NSFetchRequest<CurrentShoppingList>(entityName: "CurrentShoppingList")
+                let shoppingFetchRequest = NSFetchRequest<ShoppingList>(entityName: "ShoppingList")
+                let shoppingPredicate = NSPredicate(format: "current == true")
+                shoppingFetchRequest.predicate = shoppingPredicate
                 
                 do {
                     // Perform current shopping list fetch
@@ -68,16 +70,15 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
                     
                     // If no current list exist in the database, we create a new one and save it
                     if (self.shoppingList == nil) {
-                        let shoppingListDescriptor = NSEntityDescription.entity(forEntityName: "CurrentShoppingList", in: context)!
+                        let shoppingListDescriptor = NSEntityDescription.entity(forEntityName: "ShoppingList", in: context)!
                         let shoppingListObject = NSManagedObject(entity: shoppingListDescriptor, insertInto: context)
+                        
+                        let currentShoppingList = shoppingListObject as? ShoppingList
+                        currentShoppingList?.current = true
+                        
                         try context.save()
                         
-                        self.shoppingList = shoppingListObject as? CurrentShoppingList
-                    }
-                    
-                    // If current shoppling list doesnt point to any list, create it
-                    if (self.shoppingList?.list == nil) {
-                        self.shoppingList?.list = ShoppingList(context: context)
+                        self.shoppingList = currentShoppingList
                     }
                     
                     // Perform product fetch

@@ -8,13 +8,11 @@
 import UIKit
 import CoreData
 
-extension CurrentShoppingList {
-    
+extension ShoppingList {
     func addItem(for product: ProductMO, context: NSManagedObjectContext) {
-        if let list = self.list {
-            let shoppingItem = ShoppingItem(context: context)
-            shoppingItem.product = product
-            shoppingItem.list = list
-        }
+        let shoppingItem = ShoppingItem(context: context)
+        shoppingItem.addedDate = Date()
+        shoppingItem.product = product
+        shoppingItem.list = self
     }
 }

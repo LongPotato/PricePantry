@@ -10,8 +10,9 @@ import UIKit
 import CoreData
 
 class TodoListViewController: UITableViewController, NSFetchedResultsControllerDelegate {
-    var fetchResultController: NSFetchedResultsController<CurrentShoppingList>!
+    var fetchResultController: NSFetchedResultsController<ShoppingItem>!
     
+    var shoppingList: ShoppingList?
     var items: [ShoppingItem] = []
     
     override func viewDidLoad() {
@@ -24,19 +25,37 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     }
     
     func setUpData() {
-        let fetchRequest: NSFetchRequest<CurrentShoppingList> = CurrentShoppingList.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
         if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
             let context = appDelegate.persistentContainer.viewContext
             
-            // Current shopping list fetch controller
-            self.fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-            self.fetchResultController.delegate = self
+            // Current shopping list fetch request
+            let shoppingFetchRequest = NSFetchRequest<ShoppingList>(entityName: "ShoppingList")
+            let shoppingPredicate = NSPredicate(format: "current == true")
+            shoppingFetchRequest.predicate = shoppingPredicate
             
-            fetchList()
+            do {
+                // Perform shopping list fetch
+                self.shoppingList = try context.fetch(shoppingFetchRequest).first
+                
+                if let shoppingList = self.shoppingList {
+                    // Fetch all items of this current shopping list
+                    let fetchRequest: NSFetchRequest<ShoppingItem> = ShoppingItem.fetchRequest()
+                    let sortDescriptor = NSSortDescriptor(key: "addedDate", ascending: true)
+                    let predicate = NSPredicate(format: "list == %@", shoppingList)
+                    fetchRequest.sortDescriptors = [sortDescriptor]
+                    fetchRequest.predicate = predicate
+                    
+                    // Shopping items fetch controller
+                    self.fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+                    self.fetchResultController.delegate = self
+                    
+                    fetchList()
+                }
+            } catch {
+                print(error)
+            }
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,10 +67,8 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
         do {
             try self.fetchResultController.performFetch()
             
-            if let currentShoppingList = self.fetchResultController.fetchedObjects?.first {
-                if let items = currentShoppingList.list!.items {
-                    self.items = items.allObjects as! [ShoppingItem]
-                }
+            if let items = self.fetchResultController.fetchedObjects {
+                self.items = items
             }
         } catch {
             print(error)
@@ -119,11 +136,8 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
             tableView.reloadData()
         }
         
-        if let currentShoppingList = controller.fetchedObjects?.first {
-            let shoppingList = currentShoppingList as! CurrentShoppingList
-            if let items = shoppingList.list!.items {
-                self.items = items.allObjects as! [ShoppingItem]
-            }
+        if let items = self.fetchResultController.fetchedObjects {
+            self.items = items
         }
     }
     
