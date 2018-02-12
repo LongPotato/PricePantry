@@ -12,6 +12,7 @@ import CoreData
 class ProductTableViewController: UITableViewController, NSFetchedResultsControllerDelegate, AddEditProductControllerDelegate, UISearchResultsUpdating {
     let searchBarController = UISearchController(searchResultsController: nil)
     var fetchResultController: NSFetchedResultsController<ProductMO>!
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     var products: [ProductMO] = []
     var searchResults: [ProductMO] = []

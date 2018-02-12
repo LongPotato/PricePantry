@@ -9,6 +9,7 @@
 import UIKit
 
 class AddEditProductController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EntryCellWithLabelDelegate  {
+    let notificationHapticGenerator = UINotificationFeedbackGenerator()
     
     var headerView: AddEditProductHeaderView!
     var productNameCell: LargeEntryCell!
@@ -154,6 +155,8 @@ class AddEditProductController: UITableViewController, UIImagePickerControllerDe
                 
                 let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
                 alert.addAction(cancelAction)
+                
+                notificationHapticGenerator.notificationOccurred(.error)
                 
                 present(alert, animated: true, completion: nil)
             } else {

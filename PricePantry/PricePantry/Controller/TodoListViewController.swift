@@ -11,6 +11,7 @@ import CoreData
 
 class TodoListViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     var fetchResultController: NSFetchedResultsController<ShoppingItem>!
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     var shoppingList: ShoppingList?
     var items: [ShoppingItem] = []
@@ -97,7 +98,11 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
             cell.checkedIcon.image = #imageLiteral(resourceName: "unchecked-icon")
         }
         
-        cell.nameLabel.text = item.product!.name
+        if (item.quantity > 1) {
+            cell.nameLabel.text = item.product!.name! + " (x" + String(item.quantity) + ")"
+        } else {
+            cell.nameLabel.text = item.product!.name!
+        }
         
         return cell
     }
@@ -129,6 +134,9 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
             itemToUpdate.checked = !itemToUpdate.checked
             
             appDelegate.saveContext()
+            
+            impactFeedbackGenerator.impactOccurred()
+            
             tableView.deselectRow(at: indexPath, animated: false)
         }
     }

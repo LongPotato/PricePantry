@@ -16,6 +16,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     private let tableViewHeaderHeight: CGFloat = 210
     var headerView: ProductDetailsHeaderView!
     var fetchResultController: NSFetchedResultsController<PriceMO>!
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     init() {
         super.init(style: .plain)
@@ -246,6 +247,7 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
             if let newIndexPath = newIndexPath {
                 let index = getPriceCellIndexPath(indexPath: newIndexPath)
                 tableView.insertRows(at: [index], with: .fade)
+                impactFeedbackGenerator.impactOccurred()
             }
         case .delete:
             if let indexPath = indexPath {
