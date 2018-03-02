@@ -164,6 +164,13 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
             fetchItems()
             
             impactFeedbackGenerator.impactOccurred()
+            
+            let successAlert = MBProgressHUD.showAdded(to: self.view, animated: true)
+            successAlert.mode = .customView
+            successAlert.customView = UIImageView(image: #imageLiteral(resourceName: "check-mark"))
+            successAlert.label.text = "Completed"
+            successAlert.hide(animated: true, afterDelay: 1)
+            
             tableView.reloadData()
         }
     }

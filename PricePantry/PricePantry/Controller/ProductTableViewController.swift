@@ -129,6 +129,13 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
                         list.addItem(for: self.products[indexPath.row], context: context)
                         appDelegate.saveContext()
                     }
+                    
+                    let successAlert = MBProgressHUD.showAdded(to: self.view, animated: true)
+                    successAlert.mode = .customView
+                    successAlert.customView = UIImageView(image: #imageLiteral(resourceName: "check-mark"))
+                    successAlert.label.text = "Added"
+                    
+                    successAlert.hide(animated: true, afterDelay: 1)
                 }
             }
             
