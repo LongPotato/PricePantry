@@ -13,11 +13,15 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     var fetchResultController: NSFetchedResultsController<ShoppingItem>!
     let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
+    var completeButtonIndexPath: IndexPath!
+    
     var shoppingList: ShoppingList?
     var items: [ShoppingItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        completeButtonIndexPath = IndexPath(item: 0, section: 1)
         
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Shopping"
@@ -81,30 +85,40 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     // MARK: Tableview delegate & data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        if (section == 0) {
+            return items.count
+        } else {
+            return items.count == 0 ? 0 : 1
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TodoItemTableViewCell.self)) as! TodoItemTableViewCell
-        let item = items[indexPath.row]
-        
-        if (item.checked) {
-            cell.checkedIcon.image = #imageLiteral(resourceName: "checked-icon")
+        if (indexPath.section == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TodoItemTableViewCell.self)) as! TodoItemTableViewCell
+            let item = items[indexPath.row]
+            
+            if (item.checked) {
+                cell.checkedIcon.image = #imageLiteral(resourceName: "checked-icon")
+            } else {
+                cell.checkedIcon.image = #imageLiteral(resourceName: "unchecked-icon")
+            }
+            
+            if (item.quantity > 1) {
+                cell.nameLabel.text = item.product!.name! + " (x" + String(item.quantity) + ")"
+            } else {
+                cell.nameLabel.text = item.product!.name!
+            }
+            
+            return cell
         } else {
-            cell.checkedIcon.image = #imageLiteral(resourceName: "unchecked-icon")
+            let cell = CenterActionButtonCell()
+            cell.buttonText.text = "Complete"
+            return cell
         }
-        
-        if (item.quantity > 1) {
-            cell.nameLabel.text = item.product!.name! + " (x" + String(item.quantity) + ")"
-        } else {
-            cell.nameLabel.text = item.product!.name!
-        }
-        
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -129,15 +143,17 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-            let itemToUpdate = items[indexPath.row]
-            itemToUpdate.checked = !itemToUpdate.checked
-            
-            appDelegate.saveContext()
-            
-            impactFeedbackGenerator.impactOccurred()
-            
-            tableView.deselectRow(at: indexPath, animated: false)
+        if (indexPath.section == 0) {
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                let itemToUpdate = items[indexPath.row]
+                itemToUpdate.checked = !itemToUpdate.checked
+                
+                appDelegate.saveContext()
+                
+                impactFeedbackGenerator.impactOccurred()
+                
+                tableView.deselectRow(at: indexPath, animated: false)
+            }
         }
     }
 
@@ -152,10 +168,20 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
         case .insert:
             if let newIndexPath = newIndexPath {
                 tableView.insertRows(at: [newIndexPath], with: .fade)
+                
+                // Display complete button cell if initially there's no item
+                if (items.count == 0) {
+                    tableView.insertRows(at: [completeButtonIndexPath], with: .fade)
+                }
             }
         case .delete:
             if let indexPath = indexPath {
                 tableView.deleteRows(at: [indexPath], with: .fade)
+                
+                // Hide complete button cell if after delete there's no item
+                if (items.count == 1) {
+                    tableView.deleteRows(at: [completeButtonIndexPath], with: .fade)
+                }
             }
         case .update:
             if let indexPath = indexPath {
@@ -173,4 +199,5 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
+
 }

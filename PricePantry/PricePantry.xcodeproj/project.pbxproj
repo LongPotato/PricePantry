@@ -33,6 +33,7 @@
 		8B6053A9201D654800217FEB /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053A8201D654800217FEB /* UIImageExtension.swift */; };
 		8B6053AB201D985B00217FEB /* ControllerActionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */; };
 		8B6053AD201FE55F00217FEB /* TableViewBackgroundLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */; };
+		8B8E89352048FA9400D50033 /* CenterActionButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E89342048FA9400D50033 /* CenterActionButtonCell.swift */; };
 		8BB8AFFE202FBF5500D406CD /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8AFFD202FBF5500D406CD /* TabBarController.swift */; };
 		8BB8B000202FF10500D406CD /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8AFFF202FF10500D406CD /* TodoListViewController.swift */; };
 		8BB8B002202FFD6000D406CD /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8B001202FFD6000D406CD /* ShoppingList.swift */; };
@@ -67,6 +68,7 @@
 		8B6053A8201D654800217FEB /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		8B6053AA201D985B00217FEB /* ControllerActionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerActionDelegate.swift; sourceTree = "<group>"; };
 		8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBackgroundLoadingView.swift; sourceTree = "<group>"; };
+		8B8E89342048FA9400D50033 /* CenterActionButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterActionButtonCell.swift; sourceTree = "<group>"; };
 		8BB8AFFD202FBF5500D406CD /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		8BB8AFFF202FF10500D406CD /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
 		8BB8B001202FFD6000D406CD /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				1C1CC9592013F46F002A163F /* EntryCellWithLabel.swift */,
 				1C1CC95D2014464C002A163F /* DatePickerCell.swift */,
 				1C1CC95F20154C0E002A163F /* LargeEntryCell.swift */,
+				8B8E89342048FA9400D50033 /* CenterActionButtonCell.swift */,
 			);
 			path = Control;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				8BB8AFFE202FBF5500D406CD /* TabBarController.swift in Sources */,
 				8B6053AD201FE55F00217FEB /* TableViewBackgroundLoadingView.swift in Sources */,
 				1C76F0FF20045869009C9F26 /* ProductTableViewCell.swift in Sources */,
+				8B8E89352048FA9400D50033 /* CenterActionButtonCell.swift in Sources */,
 				1C76F0FD20045869009C9F26 /* Models.swift in Sources */,
 				1C76F0FE20045869009C9F26 /* ProductDetailsViewController.swift in Sources */,
 				1C1CC95A2013F46F002A163F /* EntryCellWithLabel.swift in Sources */,
