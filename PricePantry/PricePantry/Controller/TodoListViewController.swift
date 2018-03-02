@@ -12,6 +12,7 @@ import CoreData
 class TodoListViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     var fetchResultController: NSFetchedResultsController<ShoppingItem>!
     let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+    var context: NSManagedObjectContext!
     
     var completeButtonIndexPath: IndexPath!
     
@@ -33,7 +34,7 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     
     func setUpData() {
         if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-            let context = appDelegate.persistentContainer.viewContext
+            context = appDelegate.persistentContainer.viewContext
             
             // Current shopping list fetch request
             let shoppingFetchRequest = NSFetchRequest<ShoppingList>(entityName: "ShoppingList")
@@ -44,20 +45,7 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
                 // Perform shopping list fetch
                 self.shoppingList = try context.fetch(shoppingFetchRequest).first
                 
-                if let shoppingList = self.shoppingList {
-                    // Fetch all items of this current shopping list
-                    let fetchRequest: NSFetchRequest<ShoppingItem> = ShoppingItem.fetchRequest()
-                    let sortDescriptor = NSSortDescriptor(key: "addedDate", ascending: true)
-                    let predicate = NSPredicate(format: "list == %@", shoppingList)
-                    fetchRequest.sortDescriptors = [sortDescriptor]
-                    fetchRequest.predicate = predicate
-                    
-                    // Shopping items fetch controller
-                    self.fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-                    self.fetchResultController.delegate = self
-                    
-                    fetchList()
-                }
+                fetchItems()
             } catch {
                 print(error)
             }
@@ -66,16 +54,29 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        fetchList()
+        fetchItems()
         tableView.reloadData()
     }
     
-    func fetchList() {
+    func fetchItems() {
         do {
-            try self.fetchResultController.performFetch()
-            
-            if let items = self.fetchResultController.fetchedObjects {
-                self.items = items
+            if let shoppingList = self.shoppingList {
+                // Fetch all items of this current shopping list
+                let fetchRequest: NSFetchRequest<ShoppingItem> = ShoppingItem.fetchRequest()
+                let sortDescriptor = NSSortDescriptor(key: "addedDate", ascending: true)
+                let predicate = NSPredicate(format: "list == %@", shoppingList)
+                fetchRequest.sortDescriptors = [sortDescriptor]
+                fetchRequest.predicate = predicate
+                
+                // Shopping items fetch controller
+                self.fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+                self.fetchResultController.delegate = self
+                
+                try self.fetchResultController.performFetch()
+                
+                if let items = self.fetchResultController.fetchedObjects {
+                    self.items = items
+                }
             }
         } catch {
             print(error)
@@ -144,6 +145,7 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.section == 0) {
+            // Item cell selected
             if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
                 let itemToUpdate = items[indexPath.row]
                 itemToUpdate.checked = !itemToUpdate.checked
@@ -154,6 +156,15 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
                 
                 tableView.deselectRow(at: indexPath, animated: false)
             }
+        } else {
+            // Complete button selected
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            saveCompletedList()
+            fetchItems()
+            
+            impactFeedbackGenerator.impactOccurred()
+            tableView.reloadData()
         }
     }
 
@@ -199,5 +210,32 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
-
+    
+    func saveCompletedList() {
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let context = appDelegate.persistentContainer.viewContext
+            
+            if let shoppingList = self.shoppingList {
+                shoppingList.current = false
+                shoppingList.completedDate = Date()
+                
+                appDelegate.saveContext()
+                
+                do {
+                    // Create a new shopping list
+                    let shoppingListDescriptor = NSEntityDescription.entity(forEntityName: "ShoppingList", in: context)!
+                    let shoppingListObject = NSManagedObject(entity: shoppingListDescriptor, insertInto: context)
+                    
+                    let currentShoppingList = shoppingListObject as? ShoppingList
+                    currentShoppingList?.current = true
+                    
+                    try context.save()
+                    
+                    self.shoppingList = currentShoppingList
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
 }

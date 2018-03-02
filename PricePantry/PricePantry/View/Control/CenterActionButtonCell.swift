@@ -17,6 +17,8 @@ class CenterActionButtonCell: BaseControlCell {
     }()
     
     override func setUpViews() {
+        selectionStyle = .default
+        
         contentView.addSubview(buttonText)
         
         buttonText.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

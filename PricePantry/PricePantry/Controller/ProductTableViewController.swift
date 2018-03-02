@@ -14,6 +14,8 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     var fetchResultController: NSFetchedResultsController<ProductMO>!
     let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
+    var context: NSManagedObjectContext!
+    
     var products: [ProductMO] = []
     var searchResults: [ProductMO] = []
     var shoppingList: ShoppingList?
@@ -51,37 +53,15 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-
+            self.context = appDelegate.persistentContainer.viewContext
+            
             // Fetch the data from storage in the background
             DispatchQueue.global(qos: .userInitiated).async {
-                let context = appDelegate.persistentContainer.viewContext
-                
                 // Product fetch controller
-                self.fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+                self.fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
                 self.fetchResultController.delegate = self
                 
-                // Shopping list fetch request
-                let shoppingFetchRequest = NSFetchRequest<ShoppingList>(entityName: "ShoppingList")
-                let shoppingPredicate = NSPredicate(format: "current == true")
-                shoppingFetchRequest.predicate = shoppingPredicate
-                
                 do {
-                    // Perform current shopping list fetch
-                    self.shoppingList = try context.fetch(shoppingFetchRequest).first
-                    
-                    // If no current list exist in the database, we create a new one and save it
-                    if (self.shoppingList == nil) {
-                        let shoppingListDescriptor = NSEntityDescription.entity(forEntityName: "ShoppingList", in: context)!
-                        let shoppingListObject = NSManagedObject(entity: shoppingListDescriptor, insertInto: context)
-                        
-                        let currentShoppingList = shoppingListObject as? ShoppingList
-                        currentShoppingList?.current = true
-                        
-                        try context.save()
-                        
-                        self.shoppingList = currentShoppingList
-                    }
-                    
                     // Perform product fetch
                     try self.fetchResultController.performFetch()
                     if let fetchedObjects = self.fetchResultController.fetchedObjects {
@@ -98,6 +78,11 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
                 }
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadShoppingList()
     }
     
     // MARK: TableView dataSource & delegate
@@ -261,6 +246,37 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+    }
+    
+    func loadShoppingList() {
+        // Fetch the data from storage in the background
+        DispatchQueue.global(qos: .userInitiated).async {
+            
+            // Shopping list fetch request
+            let shoppingFetchRequest = NSFetchRequest<ShoppingList>(entityName: "ShoppingList")
+            let shoppingPredicate = NSPredicate(format: "current == true")
+            shoppingFetchRequest.predicate = shoppingPredicate
+            
+            do {
+                // Perform current shopping list fetch
+                self.shoppingList = try self.context.fetch(shoppingFetchRequest).first
+                
+                // If no current list exist in the database, we create a new one and save it
+                if (self.shoppingList == nil) {
+                    let shoppingListDescriptor = NSEntityDescription.entity(forEntityName: "ShoppingList", in: self.context)!
+                    let shoppingListObject = NSManagedObject(entity: shoppingListDescriptor, insertInto: self.context)
+                    
+                    let currentShoppingList = shoppingListObject as? ShoppingList
+                    currentShoppingList?.current = true
+                    
+                    try self.context.save()
+                    
+                    self.shoppingList = currentShoppingList
+                }
+            } catch {
+                print(error)
+            }
+        }
     }
     
     // MARK: Search bar delegate & methods
