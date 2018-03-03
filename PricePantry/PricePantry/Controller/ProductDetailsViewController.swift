@@ -14,9 +14,10 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
     private var prices: [PriceMO]! = []
     private var defaultTintColor: UIColor?
     private let tableViewHeaderHeight: CGFloat = 210
+    var shoppingList: ShoppingList!
     var headerView: ProductDetailsHeaderView!
     var fetchResultController: NSFetchedResultsController<PriceMO>!
-    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
     
     init() {
         super.init(style: .plain)
@@ -233,6 +234,26 @@ class ProducDetailsViewController: UITableViewController, DetailsViewCellActionD
         let newPriceController = UINavigationController(rootViewController: controller)
         
         present(newPriceController, animated: true, completion: nil)
+    }
+    
+    func addToShoppingButtonTapped() {
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let context = appDelegate.persistentContainer.viewContext
+            
+            if let list = self.shoppingList {
+                list.addItem(for: product, context: context)
+                appDelegate.saveContext()
+                
+                let successAlert = MBProgressHUD.showAdded(to: self.view, animated: true)
+                successAlert.mode = .customView
+                successAlert.customView = UIImageView(image: #imageLiteral(resourceName: "check-mark"))
+                successAlert.label.text = "Added"
+                
+                impactFeedbackGenerator.impactOccurred()
+                
+                successAlert.hide(animated: true, afterDelay: 1)
+            }
+        }
     }
     
     // MARK: CoreData delegate

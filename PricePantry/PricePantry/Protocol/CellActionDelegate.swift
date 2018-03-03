@@ -17,6 +17,7 @@ import UIKit
 */
 protocol DetailsViewCellActionDelegate {
     func addPriceButtonTapped()
+    func addToShoppingButtonTapped()
 }
 
 protocol EntryCellWithLabelDelegate{

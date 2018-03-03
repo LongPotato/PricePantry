@@ -238,6 +238,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     
     func navigateToProductPage(product: ProductMO) {
         let detailsViewController = ProducDetailsViewController(product: product)
+        detailsViewController.shoppingList = self.shoppingList
         detailsViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
