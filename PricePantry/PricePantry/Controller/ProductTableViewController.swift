@@ -15,6 +15,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
     let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     var context: NSManagedObjectContext!
+    var loadProductFinished: Bool = false
     
     var products: [ProductMO] = []
     var searchResults: [ProductMO] = []
@@ -36,6 +37,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         tableView.estimatedRowHeight = 96
         tableView.showsVerticalScrollIndicator = false
         
+        // TODO: Use background view for both empty message and spinner can be a problem. Revisit if necessary
         tableView.backgroundView = TableViewBackgroundLoadingView()
         
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: String(describing: ProductTableViewCell.self))
@@ -67,10 +69,12 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
                     if let fetchedObjects = self.fetchResultController.fetchedObjects {
                         DispatchQueue.main.async {
                             self.products = fetchedObjects
-                            self.tableView.reloadData()
                             
+                            self.loadProductFinished = true
                             self.tableView.backgroundView?.isHidden = true
                             self.tableView.separatorStyle = .singleLine
+                            
+                            self.tableView.reloadData()
                         }
                     }
                 } catch {
@@ -78,6 +82,14 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
                 }
             }
         }
+    }
+    
+    func setUpEmptyMessageView() {
+        let emptyView = TableEmptyMessageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        emptyView.message.text = "Product list is empty. Add new product by clicking the plus icon at the top."
+        tableView.backgroundView = emptyView
+        tableView.backgroundView?.isHidden = true
+        tableView.separatorStyle = .none
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +105,20 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         } else {
             return products.count;
         }
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if (products.count == 0 && loadProductFinished) {
+            // If the table finished loading and the list is empty
+            setUpEmptyMessageView()
+            tableView.backgroundView?.isHidden = false
+            tableView.separatorStyle = .none
+        } else if (products.count > 0 && loadProductFinished) {
+            // If the table finished loading and the list is not empty
+            tableView.backgroundView?.isHidden = true
+            tableView.separatorStyle = .singleLine
+        }
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -35,6 +35,7 @@
 		8B6053AD201FE55F00217FEB /* TableViewBackgroundLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */; };
 		8B8E89352048FA9400D50033 /* CenterActionButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E89342048FA9400D50033 /* CenterActionButtonCell.swift */; };
 		8BB50B392049FC3200E2B937 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB50B372049FC3100E2B937 /* MBProgressHUD.m */; };
+		8BB50B3B204A1D6200E2B937 /* TableEmptyMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB50B3A204A1D6200E2B937 /* TableEmptyMessageView.swift */; };
 		8BB8AFFE202FBF5500D406CD /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8AFFD202FBF5500D406CD /* TabBarController.swift */; };
 		8BB8B000202FF10500D406CD /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8AFFF202FF10500D406CD /* TodoListViewController.swift */; };
 		8BB8B002202FFD6000D406CD /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8B001202FFD6000D406CD /* ShoppingList.swift */; };
@@ -73,6 +74,7 @@
 		8BB50B362049FC2F00E2B937 /* PricePantry-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PricePantry-Bridging-Header.h"; sourceTree = "<group>"; };
 		8BB50B372049FC3100E2B937 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		8BB50B382049FC3100E2B937 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		8BB50B3A204A1D6200E2B937 /* TableEmptyMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEmptyMessageView.swift; sourceTree = "<group>"; };
 		8BB8AFFD202FBF5500D406CD /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		8BB8AFFF202FF10500D406CD /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
 		8BB8B001202FFD6000D406CD /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				1CFC3B102012BD32004A06AE /* ProductPriceViewCell.swift */,
 				8B60537F201A8DE600217FEB /* AddEditProductHeaderView.swift */,
 				8B6053AC201FE55F00217FEB /* TableViewBackgroundLoadingView.swift */,
+				8BB50B3A204A1D6200E2B937 /* TableEmptyMessageView.swift */,
 				8B2FD7182031295200B8D195 /* TodoItemTableViewCell.swift */,
 			);
 			path = View;
@@ -283,6 +286,7 @@
 				8B2FD7192031295200B8D195 /* TodoItemTableViewCell.swift in Sources */,
 				8B605380201A8DE600217FEB /* AddEditProductHeaderView.swift in Sources */,
 				1C76F10520045CFD009C9F26 /* ProductDetailsTitleViewCell.swift in Sources */,
+				8BB50B3B204A1D6200E2B937 /* TableEmptyMessageView.swift in Sources */,
 				1C76F10220045BBE009C9F26 /* ProductDetailsHeaderView.swift in Sources */,
 				8B6053A7201C673000217FEB /* NavigationExtension.swift in Sources */,
 				8B60537E201A8A1200217FEB /* AddEditProductController.swift in Sources */,

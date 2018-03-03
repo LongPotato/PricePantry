@@ -29,6 +29,12 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
         
         tableView.register(TodoItemTableViewCell.self, forCellReuseIdentifier: String(describing: TodoItemTableViewCell.self))
         
+        
+        let emptyView = TableEmptyMessageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        emptyView.message.text = "Shopping list is empty. Add item to your shopping list from the Product page."
+        tableView.backgroundView = emptyView
+        tableView.backgroundView?.isHidden = true
+        
         setUpData()
     }
     
@@ -91,6 +97,11 @@ class TodoListViewController: UITableViewController, NSFetchedResultsControllerD
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (section == 0) {
+            if (items.count > 0) {
+                tableView.backgroundView?.isHidden = true
+            } else {
+                tableView.backgroundView?.isHidden = false
+            }
             return items.count
         } else {
             return items.count == 0 ? 0 : 1
