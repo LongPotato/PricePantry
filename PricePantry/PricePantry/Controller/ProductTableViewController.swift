@@ -28,6 +28,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         searchBarController.dimsBackgroundDuringPresentation = false
         
         navigationController?.navigationBar.prefersLargeTitles = true
+        definesPresentationContext = true
         navigationItem.searchController = searchBarController
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.title = "Products"
@@ -136,7 +137,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         if (searchBarController.isActive) {
             product = searchResults[indexPath.row]
             // Disable search controller so we can push to navigation controller
-            searchBarController.isActive = false
+            //searchBarController.isActive = false
         }
         
         navigateToProductPage(product: product)
@@ -150,9 +151,11 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
             if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
                 let context = appDelegate.persistentContainer.viewContext
                 
+                let selectedProduct = self.searchBarController.isActive ? self.searchResults[indexPath.row] : self.products[indexPath.row]
+                
                 if let list = self.shoppingList {
                     DispatchQueue.global(qos: .userInitiated).async {
-                        list.addItem(for: self.products[indexPath.row], context: context)
+                        list.addItem(for: selectedProduct, context: context)
                         appDelegate.saveContext()
                     }
                     
@@ -184,7 +187,8 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
             let yesAction = UIAlertAction(title: "Yes", style: .destructive, handler: {(action) in
                 if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
                     let context = appDelegate.persistentContainer.viewContext
-                    let productToDelete = self.fetchResultController.object(at: indexPath)
+                    //let productToDelete = self.fetchResultController.object(at: indexPath)
+                    let productToDelete = self.searchBarController.isActive ? self.searchResults[indexPath.row] : self.products[indexPath.row]
                     
                     context.delete(productToDelete)
                     
@@ -210,7 +214,9 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         })
         
         let editAction = UIContextualAction(style: .normal, title: nil) { (action, sourceView, completionHandler) in
-            let productToEdit = self.fetchResultController.object(at: indexPath)
+            
+            let productToEdit = self.searchBarController.isActive ? self.searchResults[indexPath.row] : self.products[indexPath.row]
+            //let productToEdit = self.fetchResultController.object(at: indexPath)
             let controller = AddEditProductController(product: productToEdit, style: .grouped)
             let newProductController = UINavigationController(rootViewController: controller)
             
@@ -240,6 +246,7 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
         let detailsViewController = ProducDetailsViewController(product: product)
         detailsViewController.shoppingList = self.shoppingList
         detailsViewController.hidesBottomBarWhenPushed = true
+        
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
@@ -263,6 +270,9 @@ class ProductTableViewController: UITableViewController, NSFetchedResultsControl
             }
         case .delete:
             if let indexPath = indexPath {
+                if (searchBarController.isActive) {
+                    searchResults.remove(at: indexPath.row)
+                }
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
         case .update:
